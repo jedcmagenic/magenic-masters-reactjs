@@ -2,21 +2,24 @@
 
 var React = require('react');
 var ReactDOM = require('react-dom');
+var Bootstrap = require('bootstrap/dist/css/bootstrap.css');
+var Header = require('./components/header.jsx');
+var Banner = require('./components/banner.jsx');
+var Footer = require('./components/footer.jsx');
 
 var KanbanApplication = React.createClass({
     render: function(){
-        var elapsed = Math.round(this.props.elapsed / 100);
-        var seconds = elapsed / 10 + (elapsed % 10 ? '' : '.0');
-        var message = "Hello World! React has been successfully running for " + seconds + " seconds.";
-
-        return <p>{message}</p>;
+        return (
+            <div>
+                <Header text="React JS"/>
+                <Banner />
+                <Footer footerText="Magenic Master ReactJS" copyrightText="2017" />
+            </div>
+        );
     }
 });
 
-var start = new Date().getTime();
 
-setInterval(function(){
-    ReactDOM.render(
-        <KanbanApplication elapsed={new Date().getTime() - start} />, document.getElementById('root')
-    );
-}, 50);
+ReactDOM.render(
+        <KanbanApplication />, document.getElementById('root')
+);
