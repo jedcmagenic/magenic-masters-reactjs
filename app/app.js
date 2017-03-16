@@ -3,6 +3,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Bootstrap = require('bootstrap/dist/css/bootstrap.css');
+var Styles = require('../public/css/style.css');
+
 var Header = require('./components/header.jsx');
 var Banner = require('./components/banner.jsx');
 var Body = require('./components/body.jsx');
