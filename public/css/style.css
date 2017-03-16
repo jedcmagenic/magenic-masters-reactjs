@@ -1,4 +1,65 @@
+.page-header{
+    background-color: dodgerblue;
+    color: floralwhite;
+}
+
+.page-footer{
+    background-color: dodgerblue;
+    color: floralwhite;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 5px; /* 5px rounded corners */
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+    padding: 15px;
+}
+
+.bannerImage{
+    width: 100%;
+    height: 40%;
+}
+
+.navbar {
+    border-radius: 0px !important;
+}
+
+.table > thead.tasks {
+    background-color: lightblue;
+}
+
+.table > tbody > tr > td {
+     vertical-align: middle;
+}
+
+.table > tbody > tr > td h6.description {
+     text-indent: 30px;
+}
+
+.sortable{
+    cursor: pointer;
+}
+
 div.right{
     float: right !important;
     text-align: right;
+}
+
+div.text-middle{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.spacer{
+    margin-right: 10px;
+    padding-right: 10px;
 }
