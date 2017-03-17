@@ -1,6 +1,7 @@
 'use strict'
 
 var React = require('react');
+import { Link } from 'react-router'
 
 var Header = new React.createClass({
     render: function(){
@@ -14,8 +15,8 @@ var Header = new React.createClass({
                         </div>
                         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul className="nav navbar-nav">
-                                <li>Tasks</li>
-                                <li>Kanban</li>
+                                <li><Link to="/taskList">Tasks</Link></li>
+                                <li><Link to="/kanban">Kanban</Link></li>
                             </ul>
                         </div>
                     </div>
