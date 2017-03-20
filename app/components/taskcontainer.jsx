@@ -1,8 +1,15 @@
 'use strict'
 
 var React = require('react');
+var TaskList = require('./tasklist');
+var TaskApi = require('../api/tasks-api.js');
 
 var TaskContainer = React.createClass({
+    getInitialState: function () {
+        return {
+            tasksData: JSON.parse(TaskApi.getItems())
+        };
+    },
     render: function(){
         return (
             <div className="container-fluid">
@@ -11,7 +18,8 @@ var TaskContainer = React.createClass({
                     <div className="panel panel-primary">
                         <div className="panel-heading">Task Master List </div>
                         <div className="panel-body">
-                            Task Container
+                            <TaskList 
+                                taskItems={ this.state.tasksData } />
                         </div>
                     </div>
                 </div>
