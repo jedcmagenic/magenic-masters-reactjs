@@ -9,12 +9,41 @@ var TaskList = React.createClass({
         taskItems: React.PropTypes.array
     },
     getInitialState: function () {
+        console.log("tasklist: getInitialState");
+        
         return {
             tasksData: []
         };
     },
+    componentWillReceiveProps: function(){
+        console.log("tasklist: componentWillReceiveProps");
+        
+    },
     componentWillMount: function(){
         this.setState({ tasksData: this.props.taskItems });
+        console.log("tasklist: componentWillMount");
+        
+    },
+    componentWillUpdate: function(){
+        console.log("tasklist: componentWillUpdate");
+        
+    },
+    componentDidMount: function(){
+        console.log("tasklist: componentDidMount");
+
+    },
+    componentDidUpdate: function(){
+        console.log("tasklist: componentDidUpdate");
+
+    },
+    componentWillUnmount: function(){
+        console.log("tasklist: componentWillUnmount");
+        
+    },
+    shouldComponentUpdate: function(){
+        console.log("tasklist: shouldComponentUpdate");
+        return true;
+        
     },
     renderItems: function () {
         return this.state.tasksData.map(function (item) {
@@ -48,6 +77,7 @@ var TaskList = React.createClass({
             updatedArray.splice( index, 1 );	
             this.setState( {tasksData: updatedArray} );
             alert("Item with task name: '" +deletedTask+"' has been deleted" );
+            console.log("handleTaskDelete");
         }
         
     },
@@ -66,8 +96,29 @@ var TaskList = React.createClass({
             }
         }
         this.setState( {tasksData: updatedArray} );
+        console.log("handleTaskEdit");
+        
+    },
+    generateNewId: function(){
+        var maxObj = _.maxBy(this.state.tasksData, function(t){return t.id;});
+        return maxObj.id + 1;
+    },
+    handleTaskAdd: function(){
+        var newTask = {
+            id: this.generateNewId(),
+            name: '',
+            description: '',
+            priorityId: 1,
+            statusId: 1,
+            isEditable: true
+        };
+        var updatedTasks = this.state.tasksData.concat(newTask);
+        this.setState( {tasksData: updatedTasks} );
+        console.log("handleTaskAdd");
     },
     render: function(){
+        console.log("tasklist: render");
+        
         return (
             <div className="col-md-12">
                 <div className="col-md-12">
@@ -84,6 +135,11 @@ var TaskList = React.createClass({
                         {this.renderItems()}
                     </tbody>
                 </table>
+                </div>
+                <div className="col-md-6 btn-toolbar">
+                    <a href="#/taskList" className="btn btn-primary btn-lg" onClick={this.handleTaskAdd}>
+                        <span className="glyphicon glyphicon-plus"></span> Add Task
+                    </a>
                 </div>
             </div>
             )

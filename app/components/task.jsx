@@ -23,6 +23,11 @@ var TaskItem = React.createClass({
             isEditable: false
         };
     },
+    componentWillReceiveProps: function(){
+        console.log("task: componentWillReceiveProps");
+        console.log(this.props.name);
+        
+    },
     componentWillMount: function(){
         this.setState({
             id: this.props.id,
@@ -32,6 +37,31 @@ var TaskItem = React.createClass({
             statusId: this.props.statusId,
             isEditable: this.props.isEditable
         });
+        console.log("task: componentWillMount");
+        
+    },
+    componentWillUpdate: function(){
+        console.log("task: componentWillUpdate");
+        
+    },
+    componentDidUpdate: function(){
+        console.log("task: componentDidUpdate");
+        
+    },
+    componentDidMount: function(){
+        console.log("task: componentDidMount");
+
+    },
+    componentWillUnmount: function(){
+        console.log("task: componentWillUnmount");
+        var message = "The task: " + this.state.name + " has been deleted.";
+        alert(message);
+        
+    },
+    shouldComponentUpdate: function(){
+        console.log("task: shouldComponentUpdate");
+        return true;
+        
     },
     getStatusValue: function(statusId){
         var statusValue = "";
@@ -72,17 +102,14 @@ var TaskItem = React.createClass({
         return priorityValue;
     },
     handleEditClick: function(){
+        console.log("task: handleEditClick");
+        
         this.setState( {isEditable: true} );
     },
     handleEditSaveClick: function(){
-        var updatedTask = {
-            id: this.state.id,
-            name: this.state.name,
-            description: this.state.description,
-            priorityId: this.state.priorityId,
-            statusId: this.state.statusId
-        }
         this.setState( {isEditable: false} );
+        console.log("task: handleEditSaveClick");
+        
     },
     handleEditCancelClick: function(){
         this.setState({
@@ -111,6 +138,8 @@ var TaskItem = React.createClass({
         this.setState({statusId: selectedStatusId});
     },
     render: function(){
+            console.log("task: render");
+
             if (this.state.isEditable) {
             return (<tr>
                 <td>
