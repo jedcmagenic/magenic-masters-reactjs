@@ -32,6 +32,41 @@ var TaskList = React.createClass({
             );
         }, this);
     },
+    handleTaskDelete: function(taskId){
+        if(confirm("Are you sure you want to delete this item?")){
+            var index = -1;	
+            var taskListCount = this.state.tasksData.length;
+            var deletedTask = '';
+            var updatedArray = this.state.tasksData; //Don't modify the state's tasksData array directly
+            for( var i = 0; i < taskListCount; i++ ) {
+                if( updatedArray[i].id === taskId ) {
+                    index = i;
+                    deletedTask = updatedArray[i].name;
+                    break;
+                }
+            }
+            updatedArray.splice( index, 1 );	
+            this.setState( {tasksData: updatedArray} );
+            alert("Item with task name: '" +deletedTask+"' has been deleted" );
+        }
+        
+    },
+    handleTaskEdit: function(){
+        var index = -1;	
+        var taskListCount = this.state.tasksData.length;
+        var updatedArray = this.state.tasksData.slice(); //Don't modify the state's tasksData array directly
+        for( var i = 0; i < taskListCount; i++ ) {
+            if( updatedArray[i].id === task.id ) {
+                updatedArray[i].name = task.name;
+                updatedArray[i].description = task.description;
+                updatedArray[i].priorityId = task.priorityId;
+                updatedArray[i].statusId = task.statusId;
+                updatedArray[i].isEditable = false;
+                break;
+            }
+        }
+        this.setState( {tasksData: updatedArray} );
+    },
     render: function(){
         return (
             <div className="col-md-12">
@@ -42,6 +77,7 @@ var TaskList = React.createClass({
                             <th className="text-center">Task Details</th>
                             <th className="text-center">Priority</th>
                             <th className="text-center">Status</th>
+                            <th className="text-center"></th>
                         </tr>
                     </thead>
                     <tbody>
