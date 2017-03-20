@@ -4,26 +4,20 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var Bootstrap = require('bootstrap/dist/css/bootstrap.css');
 var Styles = require('../public/css/style.css');
+var MasterPage = require('./components/masterpage');
+var Dashboard = require('./components/dashboard');
+var Body = require('./components/body');
+var TaskContainer = require('./components/taskcontainer');
 
-var Header = require('./components/header.jsx');
-var Banner = require('./components/banner.jsx');
-var Body = require('./components/body.jsx');
-var Footer = require('./components/footer.jsx');
-
-var KanbanApplication = React.createClass({
-    render: function(){
-        return (
-            <div>
-                <Header text="React JS"/>
-                <Banner />
-                <Body />
-                <Footer footerText="Magenic Master ReactJS" copyrightText="2017" />
-            </div>
-        );
-    }
-});
-
+import { Router, Route, hashHistory } from 'react-router'
 
 ReactDOM.render(
-        <KanbanApplication />, document.getElementById('root')
+        <Router history={hashHistory}>
+            <Route component={MasterPage}>
+                <Route path="/" component={Dashboard} />
+                <Route path="/taskList" component={TaskContainer}/>
+                <Route path="/kanban" component={Body}/>
+            </Route>
+        </Router>
+    , document.getElementById('root')
 );
