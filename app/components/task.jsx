@@ -41,12 +41,10 @@ var TaskItem = React.createClass({
         
     },
     componentWillUpdate: function(){
-        console.log("task: componentWillUpdate");
-        
+        console.log("task: componentWillUpdate");      
     },
     componentDidUpdate: function(){
         console.log("task: componentDidUpdate");
-        
     },
     componentDidMount: function(){
         console.log("task: componentDidMount");
@@ -109,7 +107,14 @@ var TaskItem = React.createClass({
     handleEditSaveClick: function(){
         this.setState( {isEditable: false} );
         console.log("task: handleEditSaveClick");
-        
+        var updatedTask = {
+            id: this.state.id,
+            name: this.state.name,
+            description: this.state.description,
+            priorityId: this.state.priorityId,
+            statusId: this.state.statusId,
+        }
+        this.props.onTaskEdit(updatedTask);
     },
     handleEditCancelClick: function(){
         this.setState({
@@ -121,7 +126,9 @@ var TaskItem = React.createClass({
         });
     },
     handleDeleteTask: function(){
-        this.props.onTaskDelete(this.props.id);
+        if(confirm("Are you sure you want to delete this item?")){
+            this.props.onTaskDelete(this.props.id);
+        }
     },
     handleNameChange: function(event){
         this.setState({name: event.currentTarget.value});
