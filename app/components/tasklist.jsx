@@ -1,9 +1,8 @@
-'use strict'
 
-var React = require('react');
+import React from 'react';
 import TaskItem from './task';
-var _= require('lodash');
-var TaskModal = require('./taskmodal');
+import _ from 'lodash';
+import TaskModal from'./taskmodal';
 import { Modal, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 
 
