@@ -1,7 +1,7 @@
 'use strict'
 
 var React = require('react');
-var TaskItem = require('./task');
+import TaskItem from './task';
 var _= require('lodash');
 var TaskModal = require('./taskmodal');
 import { Modal, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
@@ -53,8 +53,18 @@ var TaskList = React.createClass({
     },
     renderItems: function () {
         return this.state.tasksData.map(function (item) {
+            const taskItemProps = {
+                    id: item.id,
+                    name: item.name,
+                    description: item.description,
+                    priorityId: item.priorityId,
+                    statusId: item.statusId,
+                    isEditable: item.isEditable,
+                    onTaskDelete: this.handleTaskDelete,
+                    onTaskEdit: this.handleTaskEdit,
+            }
             return (
-                <TaskItem 
+                /*<TaskItem 
                     key={item.id} 
                     id={item.id} 
                     name={item.name} 
@@ -63,7 +73,8 @@ var TaskList = React.createClass({
                     statusId={item.statusId}
                     isEditable={item.isEditable} 
                     onTaskDelete={this.handleTaskDelete}
-                    onTaskEdit={this.handleTaskEdit}/>
+                    onTaskEdit={this.handleTaskEdit}/>*/
+                    <TaskItem key={item.id} {...taskItemProps}/>
             );
         }, this);
     },

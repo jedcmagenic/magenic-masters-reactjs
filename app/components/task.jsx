@@ -1,68 +1,60 @@
-'use strict'
+import React from 'react';
 
-var React = require('react');
+class TaskItem extends React.Component {
+    constructor (){
+        super()
 
-var TaskItem = React.createClass({
-    propTypes: {
-        id: React.PropTypes.number.isRequired,
-        name: React.PropTypes.string.isRequired,
-        description: React.PropTypes.string.isRequired,
-        priorityId: React.PropTypes.number.isRequired,
-        statusId: React.PropTypes.number.isRequired,
-        isEditable: React.PropTypes.bool,
-        onTaskEdit: React.PropTypes.func.isRequired,
-        onTaskDelete: React.PropTypes.func.isRequired
-    },
-    getInitialState: function () {
-        return {
-            id: 0,
-            name: '',
-            description: '',
-            priorityId: 1,
-            statusId: 1,
-            isEditable: false
-        };
-    },
-    componentWillReceiveProps: function(){
+        this.getStatusValue = this.getStatusValue.bind(this);
+        this.getPriorityValue = this.getPriorityValue.bind(this);
+        this.handleEditClick = this.handleEditClick.bind(this);
+        this.handleEditSaveClick = this.handleEditSaveClick.bind(this);
+        this.handleEditCancelClick = this.handleEditCancelClick.bind(this);
+        this.handleDeleteTask = this.handleDeleteTask.bind(this);
+        this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+        this.handlePriorityChange = this.handlePriorityChange.bind(this);
+        this.handleStatusChange = this.handleStatusChange.bind(this);
+    }    
+    componentWillReceiveProps () {
         console.log("task: componentWillReceiveProps");
         console.log(this.props.name);
         
-    },
-    componentWillMount: function(){
-        this.setState({
+    }
+    componentWillMount (){
+        this.state = {
             id: this.props.id,
             name: this.props.name,
             description: this.props.description,
             priorityId: this.props.priorityId,
             statusId: this.props.statusId,
             isEditable: this.props.isEditable
-        });
+        }
         console.log("task: componentWillMount");
         
-    },
-    componentWillUpdate: function(){
+    }
+    componentWillUpdate () {
         console.log("task: componentWillUpdate");      
-    },
-    componentDidUpdate: function(){
+    }
+    componentDidUpdate () {
         console.log("task: componentDidUpdate");
-    },
-    componentDidMount: function(){
+    }
+    componentDidMount () {
         console.log("task: componentDidMount");
 
-    },
-    componentWillUnmount: function(){
+    }
+    componentWillUnmount () {
         console.log("task: componentWillUnmount");
-        var message = "The task: " + this.state.name + " has been deleted.";
+        let message = "The task: " + this.state.name + " has been deleted.";
         alert(message);
         
-    },
-    shouldComponentUpdate: function(){
+    }
+    shouldComponentUpdate(){
         console.log("task: shouldComponentUpdate");
         return true;
         
-    },
-    getStatusValue: function(statusId){
-        var statusValue = "";
+    }
+    getStatusValue (statusId){
+        let statusValue = "";
         switch (statusId) {
             case 1:
                 statusValue = "To do"
@@ -79,9 +71,9 @@ var TaskItem = React.createClass({
         }
 
         return statusValue;
-    },
-    getPriorityValue: function(priorityId){
-        var priorityValue = "";
+    }
+    getPriorityValue (priorityId){
+        let priorityValue = "";
         switch (priorityId) {
             case 1:
                 priorityValue = "Low"
@@ -98,16 +90,16 @@ var TaskItem = React.createClass({
         }
 
         return priorityValue;
-    },
-    handleEditClick: function(){
+    } 
+    handleEditClick (){
         console.log("task: handleEditClick");
         
         this.setState( {isEditable: true} );
-    },
-    handleEditSaveClick: function(){
+    } 
+    handleEditSaveClick (){
         this.setState( {isEditable: false} );
         console.log("task: handleEditSaveClick");
-        var updatedTask = {
+        let updatedTask = {
             id: this.state.id,
             name: this.state.name,
             description: this.state.description,
@@ -115,8 +107,8 @@ var TaskItem = React.createClass({
             statusId: this.state.statusId,
         }
         this.props.onTaskEdit(updatedTask);
-    },
-    handleEditCancelClick: function(){
+    } 
+    handleEditCancelClick (){
         this.setState({
             name: this.props.name,
             description: this.props.description,
@@ -124,29 +116,28 @@ var TaskItem = React.createClass({
             statusId: this.props.statusId,
             isEditable: false
         });
-    },
-    handleDeleteTask: function(){
+    } 
+    handleDeleteTask (){
         if(confirm("Are you sure you want to delete this item?")){
             this.props.onTaskDelete(this.props.id);
         }
-    },
-    handleNameChange: function(event){
+    } 
+    handleNameChange (event){
         this.setState({name: event.currentTarget.value});
-    },
-    handleDescriptionChange: function(event){
+    } 
+    handleDescriptionChange (event){
         this.setState({description: event.currentTarget.value});
-    },
-    handlePriorityChange: function(event){
-        var selectedPriorityId = parseInt(event.currentTarget.selectedOptions[0].value);
+    } 
+    handlePriorityChange (event){
+        let selectedPriorityId = parseInt(event.currentTarget.selectedOptions[0].value);
         this.setState({priorityId: selectedPriorityId});
-    },
-    handleStatusChange: function(event){
-        var selectedStatusId = parseInt(event.currentTarget.selectedOptions[0].value);
+    } 
+    handleStatusChange (event){
+        let selectedStatusId = parseInt(event.currentTarget.selectedOptions[0].value);
         this.setState({statusId: selectedStatusId});
-    },
-    render: function(){
+    } 
+    render (){
             console.log("task: render");
-
             if (this.state.isEditable) {
             return (<tr>
                 <td>
@@ -191,6 +182,26 @@ var TaskItem = React.createClass({
             </tr>);
             }
     }
-});
+}
 
-module.exports = TaskItem;
+TaskItem.propTypes = {
+    id: React.PropTypes.number.isRequired,
+    name: React.PropTypes.string.isRequired,
+    description: React.PropTypes.string.isRequired,
+    priorityId: React.PropTypes.number.isRequired,
+    statusId: React.PropTypes.number.isRequired,
+    isEditable: React.PropTypes.bool,
+    onTaskEdit: React.PropTypes.func.isRequired,
+    onTaskDelete: React.PropTypes.func.isRequired
+};
+
+TaskItem.defaultProps = {
+    id: 0,
+    name: '',
+    description: '',
+    priorityId: 1,
+    statusId: 1,
+    isEditable: false
+}
+
+export default TaskItem;
