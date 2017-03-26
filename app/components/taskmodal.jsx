@@ -6,7 +6,6 @@ import { Modal, Button, FormGroup, ControlLabel, FormControl } from 'react-boots
 var TaskModal = React.createClass({
     getInitialState: function(){
         return {
-            showAddTaskModal: true,
             id: 0,
             name: '',
             description: '',
@@ -16,7 +15,6 @@ var TaskModal = React.createClass({
     },
     componentWillMount: function(){
         this.setState({
-            showAddTaskModal: this.props.showAddTaskModal,
             id: this.props.id,
             name: this.props.name,
             description: this.props.description,
@@ -40,13 +38,6 @@ var TaskModal = React.createClass({
         var selectedStatusId = parseInt(event.currentTarget.selectedOptions[0].value);
         this.setState({statusId: selectedStatusId});
     },
-    handleOpenAddTaskModal: function(){
-        this.setState({ showAddTaskModal: true });
-    },
-    handleCloseAddTaskModal: function(){
-        this.setState({ showAddTaskModal: false });
-        
-    },
     handleSaveTask: function(){
         var taskObj = {
             id: this.state.id,
@@ -57,50 +48,53 @@ var TaskModal = React.createClass({
         }
         this.props.onSaveTask(taskObj);
     },
+    handleCloseAddTaskModal: function(){
+        this.props.onCancelClick();
+    },
     render: function(){
         console.log("taskModal: render");
         
         return (
-            <Modal show={this.state.showAddTaskModal} onHide={this.handleCloseAddTaskModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Add Task</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <form>
-                            <FormGroup controlId="txtTaskName">
-                            <ControlLabel>Task name</ControlLabel>
-                            <FormControl type="text" value={this.state.name} onChange={this.handleNameChange}/>
-                            </FormGroup>
+            <div>
+                <Modal.Header closeButton>
+                    <Modal.Title>Add Task</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <form>
+                        <FormGroup controlId="txtTaskName">
+                        <ControlLabel>Task name</ControlLabel>
+                        <FormControl type="text" value={this.state.name} onChange={this.handleNameChange}/>
+                        </FormGroup>
 
-                            <FormGroup controlId="txtTaskDescription">
-                            <ControlLabel>Task description</ControlLabel>
-                            <FormControl type="text" value={this.state.description} onChange={this.handleDescriptionChange}/>
-                            </FormGroup>
+                        <FormGroup controlId="txtTaskDescription">
+                        <ControlLabel>Task description</ControlLabel>
+                        <FormControl type="text" value={this.state.description} onChange={this.handleDescriptionChange}/>
+                        </FormGroup>
 
-                            <FormGroup controlId="selPriority">
-                            <ControlLabel>Priority</ControlLabel>
-                            <FormControl componentClass="select" value={this.state.priorityId} onChange={this.handlePriorityChange}>
-                                <option value="1">Low</option>
-                                <option value="2">Medium</option>
-                                <option value="3">High</option>
-                            </FormControl>
-                            </FormGroup>
+                        <FormGroup controlId="selPriority">
+                        <ControlLabel>Priority</ControlLabel>
+                        <FormControl componentClass="select" value={this.state.priorityId} onChange={this.handlePriorityChange}>
+                            <option value="1">Low</option>
+                            <option value="2">Medium</option>
+                            <option value="3">High</option>
+                        </FormControl>
+                        </FormGroup>
 
-                            <FormGroup controlId="selStatus">
-                            <ControlLabel>Status</ControlLabel>
-                            <FormControl componentClass="select" value={this.state.statusId} onChange={this.handleStatusChange}>
-                                <option value="1">To do</option>
-                                <option value="2">In Progress</option>
-                                <option value="3">Done</option>
-                            </FormControl>
-                            </FormGroup>
-                        </form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button bsStyle="primary" onClick={this.handleSaveTask}>Save</Button>
-                        <Button onClick={this.handleCloseAddTaskModal}>Cancel</Button>
-                    </Modal.Footer>
-                </Modal>
+                        <FormGroup controlId="selStatus">
+                        <ControlLabel>Status</ControlLabel>
+                        <FormControl componentClass="select" value={this.state.statusId} onChange={this.handleStatusChange}>
+                            <option value="1">To do</option>
+                            <option value="2">In Progress</option>
+                            <option value="3">Done</option>
+                        </FormControl>
+                        </FormGroup>
+                    </form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button bsStyle="primary" onClick={this.handleSaveTask}>Save</Button>
+                    <Button onClick={this.handleCloseAddTaskModal}>Cancel</Button>
+                </Modal.Footer>
+            </div>
             )
     }
 });

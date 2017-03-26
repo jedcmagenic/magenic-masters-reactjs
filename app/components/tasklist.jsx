@@ -4,7 +4,8 @@ var React = require('react');
 var TaskItem = require('./task');
 var _= require('lodash');
 var TaskModal = require('./taskmodal');
-import { Button } from 'react-bootstrap';
+import { Modal, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+
 
 var TaskList = React.createClass({
     propTypes: {
@@ -109,6 +110,8 @@ var TaskList = React.createClass({
         task.id = this.generateNewId();
         var updatedTasks = this.state.tasksData.concat(task);
         this.setState( {tasksData: updatedTasks} );
+        this.setState({ showAddTaskModal: false });
+        
         console.log("handleTaskAdd");
     },
     handleSaveChanges: function(){
@@ -148,14 +151,12 @@ var TaskList = React.createClass({
                     <Button bsStyle="primary" onClick={this.handleOpenAddTaskModal}><span className="glyphicon glyphicon-plus"></span> Add Task</Button>
                     <Button bsStyle="success" onClick={this.handleSaveChanges} title="Save changes to localStorage"><span className="glyphicon glyphicon-floppy-disk"></span> Save</Button>
                 </div>
-                <TaskModal showAddTaskModal={this.state.showAddTaskModal}
-                    onSaveTask={this.handleTaskAdd}
-                    id="0"
-                    name=""
-                    description=""
-                    priorityId="1"
-                    statusId="1"
-                    />
+                
+                <Modal show={this.state.showAddTaskModal} onHide={this.handleCloseAddTaskModal}>
+                    <TaskModal 
+                        onSaveTask={this.handleTaskAdd}
+                        onCancelClick={this.handleCloseAddTaskModal}/>
+                </Modal>
             </div>
             )
     }
