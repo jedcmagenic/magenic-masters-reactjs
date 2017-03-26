@@ -1,7 +1,7 @@
 'use strict'
 
 var React = require('react');
-var TaskList = require('./tasklist');
+import TaskList from './tasklist';
 var TaskApi = require('../api/tasks-api.js');
 
 var TaskContainer = React.createClass({
