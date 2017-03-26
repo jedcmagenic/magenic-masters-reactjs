@@ -10,6 +10,13 @@ var TaskContainer = React.createClass({
             tasksData: JSON.parse(TaskApi.getItems())
         };
     },
+    handleUpdateTaskRepo: function(taskItems){
+        this.setState({
+            tasksData: taskItems
+        }, function(){
+            TaskApi.setItems(this.state.tasksData);
+        });
+    },
     render: function(){
         return (
             <div className="container-fluid">
@@ -19,7 +26,8 @@ var TaskContainer = React.createClass({
                         <div className="panel-heading">Task Master List </div>
                         <div className="panel-body">
                             <TaskList 
-                                taskItems={ this.state.tasksData } />
+                                taskItems={ this.state.tasksData } 
+                                onSaveChanges={this.handleUpdateTaskRepo}/>
                         </div>
                     </div>
                 </div>

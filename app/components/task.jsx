@@ -3,6 +3,16 @@
 var React = require('react');
 
 var TaskItem = React.createClass({
+    propTypes: {
+        id: React.PropTypes.number.isRequired,
+        name: React.PropTypes.string.isRequired,
+        description: React.PropTypes.string.isRequired,
+        priorityId: React.PropTypes.number.isRequired,
+        statusId: React.PropTypes.number.isRequired,
+        isEditable: React.PropTypes.bool,
+        onTaskEdit: React.PropTypes.func.isRequired,
+        onTaskDelete: React.PropTypes.func.isRequired
+    },
     getInitialState: function () {
         return {
             id: 0,
@@ -13,6 +23,11 @@ var TaskItem = React.createClass({
             isEditable: false
         };
     },
+    componentWillReceiveProps: function(){
+        console.log("task: componentWillReceiveProps");
+        console.log(this.props.name);
+        
+    },
     componentWillMount: function(){
         this.setState({
             id: this.props.id,
@@ -22,6 +37,29 @@ var TaskItem = React.createClass({
             statusId: this.props.statusId,
             isEditable: this.props.isEditable
         });
+        console.log("task: componentWillMount");
+        
+    },
+    componentWillUpdate: function(){
+        console.log("task: componentWillUpdate");      
+    },
+    componentDidUpdate: function(){
+        console.log("task: componentDidUpdate");
+    },
+    componentDidMount: function(){
+        console.log("task: componentDidMount");
+
+    },
+    componentWillUnmount: function(){
+        console.log("task: componentWillUnmount");
+        var message = "The task: " + this.state.name + " has been deleted.";
+        alert(message);
+        
+    },
+    shouldComponentUpdate: function(){
+        console.log("task: shouldComponentUpdate");
+        return true;
+        
     },
     getStatusValue: function(statusId){
         var statusValue = "";
@@ -61,16 +99,97 @@ var TaskItem = React.createClass({
 
         return priorityValue;
     },
+    handleEditClick: function(){
+        console.log("task: handleEditClick");
+        
+        this.setState( {isEditable: true} );
+    },
+    handleEditSaveClick: function(){
+        this.setState( {isEditable: false} );
+        console.log("task: handleEditSaveClick");
+        var updatedTask = {
+            id: this.state.id,
+            name: this.state.name,
+            description: this.state.description,
+            priorityId: this.state.priorityId,
+            statusId: this.state.statusId,
+        }
+        this.props.onTaskEdit(updatedTask);
+    },
+    handleEditCancelClick: function(){
+        this.setState({
+            name: this.props.name,
+            description: this.props.description,
+            priorityId: this.props.priorityId,
+            statusId: this.props.statusId,
+            isEditable: false
+        });
+    },
+    handleDeleteTask: function(){
+        if(confirm("Are you sure you want to delete this item?")){
+            this.props.onTaskDelete(this.props.id);
+        }
+    },
+    handleNameChange: function(event){
+        this.setState({name: event.currentTarget.value});
+    },
+    handleDescriptionChange: function(event){
+        this.setState({description: event.currentTarget.value});
+    },
+    handlePriorityChange: function(event){
+        var selectedPriorityId = parseInt(event.currentTarget.selectedOptions[0].value);
+        this.setState({priorityId: selectedPriorityId});
+    },
+    handleStatusChange: function(event){
+        var selectedStatusId = parseInt(event.currentTarget.selectedOptions[0].value);
+        this.setState({statusId: selectedStatusId});
+    },
     render: function(){
+            console.log("task: render");
+
+            if (this.state.isEditable) {
+            return (<tr>
+                <td>
+                    Name: <input className="form-control" value={this.state.name} onChange={this.handleNameChange} />
+                    Description: <input className="form-control" value={this.state.description} onChange={this.handleDescriptionChange}/>
+                </td>
+                <td className="text-center middle">
+                    <select className="form-control" value={this.state.priorityId} onChange={this.handlePriorityChange}>
+                        <option value="1">Low</option>
+                        <option value="2">Medium</option>
+                        <option value="3">High</option>
+                    </select>
+                </td>
+                <td className="text-center">
+                    <select className="form-control" value={this.state.statusId} onChange={this.handleStatusChange}>
+                        <option value="1">To Do</option>
+                        <option value="2">In Progress</option>
+                        <option value="3">Done</option>
+                    </select>   
+                </td>
+                <td className="text-center">
+                    <div className="btn-group">
+                        <button type="button" className="btn btn-success glyphicon glyphicon-ok" onClick={this.handleEditSaveClick}></button>
+                        <button type="button" className="btn btn-danger glyphicon glyphicon-remove" onClick={this.handleEditCancelClick}></button>
+                    </div>
+                </td>                
+            </tr>);
+            }else{
             return (<tr>
                 <td>
                     <h4 className="taskName">{this.state.name}</h4>
                     <h6 className="description">{this.state.description}</h6>
                 </td>
                 <td className="text-center middle">{this.getPriorityValue(this.state.priorityId)}</td>
-                <td className="text-center">{this.getStatusValue(this.state.statusId)}</td>            
-            </tr>
-            );
+                <td className="text-center">{this.getStatusValue(this.state.statusId)}</td>
+                <td className="text-center">
+                    <div className="btn-group">
+                        <button type="button" className="btn btn-primary glyphicon glyphicon-edit" onClick={this.handleEditClick}></button>
+                        <button type="button" className="btn btn-danger glyphicon glyphicon-trash" onClick={this.handleDeleteTask}></button>
+                    </div>
+                </td>                
+            </tr>);
+            }
     }
 });
 
