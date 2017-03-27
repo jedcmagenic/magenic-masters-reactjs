@@ -1,5 +1,5 @@
-var TaskApi = {
-    init: function(){
+export default class TaskApi {
+    init(){
         if(!localStorage.getItem('tasks'))
         {
             localStorage.setItem('tasks', JSON.stringify([
@@ -12,22 +12,20 @@ var TaskApi = {
                 //Add items here, then click 'Refresh' to reload localStorage
             ]));
         }
-    },
-    getItems: function(){
+    }
+    getItems(){
         if(!localStorage.getItem('tasks'))
         {
             this.init();
         }
 
         return localStorage.getItem('tasks');
-    },
-    setItems: function(tasks){
+    }
+    setItems(tasks){
         localStorage.setItem('tasks', JSON.stringify(tasks));
-    },
-    refreshData: function(){
+    }
+    refreshData(){
         localStorage.clear();
         this.init();
     }
 };
-
-module.exports = TaskApi;

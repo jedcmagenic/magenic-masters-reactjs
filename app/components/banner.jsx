@@ -1,15 +1,12 @@
-'use strict'
 
-var React = require('react');
+import React from 'react';
 
-var Banner = React.createClass({
-    render: function(){
+export default class Banner extends React.PureComponent{
+    render(){
         return (
             <div className="text-center">
                 <img src="../images/banner.jpg" alt="magenic_banner" className="bannerImage"/> 
             </div>
             )
     }
-});
-
-module.exports = Banner;
+};

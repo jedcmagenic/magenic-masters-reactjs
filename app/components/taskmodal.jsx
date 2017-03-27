@@ -1,45 +1,46 @@
-'use strict'
 
-var React = require('react');
+import React from 'react';
 import { Modal, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 
-var TaskModal = React.createClass({
-    getInitialState: function(){
-        return {
+export default class TaskModal extends React.Component {
+    constructor(){
+        super()
+        this.state = {
             id: 0,
             name: '',
             description: '',
             priorityId: 1,
             statusId: 1
         }
-    },
-    componentWillMount: function(){
-        this.setState({
-            id: this.props.id,
-            name: this.props.name,
-            description: this.props.description,
-            priorityId: this.props.priorityId,
-            statusId: this.props.statusId
-        });
+        this.handleCloseAddTaskModal = this.handleCloseAddTaskModal.bind(this);
+        this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+        this.handlePriorityChange = this.handlePriorityChange.bind(this);
+        this.handleStatusChange = this.handleStatusChange.bind(this);
+        this.handleSaveTask = this.handleSaveTask.bind(this);
+    }
+    componentWillMount(){
         console.log("taskModal: componentWillMount");
         
-    },
-    handleNameChange: function(event){
-        this.setState({name: event.currentTarget.value});
-    },
-    handleDescriptionChange: function(event){
-        this.setState({description: event.currentTarget.value});
-    },
-    handlePriorityChange: function(event){
-        var selectedPriorityId = parseInt(event.currentTarget.selectedOptions[0].value);
+    }
+    handleNameChange(event){
+        const inputName = event.target.value
+        this.setState({name: inputName});
+    }
+    handleDescriptionChange(event){
+        const inputDescription = event.target.value
+        this.setState({description: inputDescription});
+    }
+    handlePriorityChange(event){
+        const selectedPriorityId = parseInt(event.currentTarget.selectedOptions[0].value);
         this.setState({priorityId: selectedPriorityId});
-    },
-    handleStatusChange: function(event){
-        var selectedStatusId = parseInt(event.currentTarget.selectedOptions[0].value);
+    }
+    handleStatusChange(event){
+        const selectedStatusId = parseInt(event.currentTarget.selectedOptions[0].value);
         this.setState({statusId: selectedStatusId});
-    },
-    handleSaveTask: function(){
-        var taskObj = {
+    }
+    handleSaveTask(){
+        const taskObj = {
             id: this.state.id,
             name: this.state.name,
             description: this.state.description,
@@ -47,11 +48,11 @@ var TaskModal = React.createClass({
             statusId: this.state.statusId,
         }
         this.props.onSaveTask(taskObj);
-    },
-    handleCloseAddTaskModal: function(){
+    }
+    handleCloseAddTaskModal(){
         this.props.onCancelClick();
-    },
-    render: function(){
+    }
+    render(){
         console.log("taskModal: render");
         
         return (
@@ -97,6 +98,4 @@ var TaskModal = React.createClass({
             </div>
             )
     }
-});
-
-module.exports = TaskModal;
+}

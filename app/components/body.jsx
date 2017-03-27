@@ -1,10 +1,9 @@
-'use strict'
 
-var React = require('react');
-var Section = require('./section.jsx');
+import React from 'react';
+import Section from './section';
 
-var Body = React.createClass({
-    render: function(){
+export default class Body extends React.PureComponent{
+    render(){
         return (
             <div className="container-fluid">
                 <h3>
@@ -24,6 +23,4 @@ var Body = React.createClass({
             </div>
             )
     }
-});
-
-module.exports = Body;
+};

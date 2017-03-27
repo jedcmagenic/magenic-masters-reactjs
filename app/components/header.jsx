@@ -1,10 +1,9 @@
-'use strict'
 
-var React = require('react');
+import React from 'react';
 import { Link } from 'react-router'
 
-var Header = new React.createClass({
-    render: function(){
+export default class Header extends React.PureComponent{
+    render(){
         return (
             <div>
                 <nav className="navbar navbar-inverse">
@@ -24,6 +23,4 @@ var Header = new React.createClass({
             </div>
             )
     }
-});
-
-module.exports = Header;
+};
