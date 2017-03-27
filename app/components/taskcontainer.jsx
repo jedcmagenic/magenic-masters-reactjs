@@ -1,23 +1,28 @@
-'use strict'
 
-var React = require('react');
-var TaskList = require('./tasklist');
-var TaskApi = require('../api/tasks-api.js');
+import React from 'react';
+import TaskList from './tasklist';
+import TaskApi from '../api/tasks-api.js';
 
-var TaskContainer = React.createClass({
-    getInitialState: function () {
-        return {
-            tasksData: JSON.parse(TaskApi.getItems())
-        };
-    },
-    handleUpdateTaskRepo: function(taskItems){
+const api = new TaskApi();
+
+export default class TaskContainer extends React.Component{
+    constructor(){
+        super()
+        this.state ={
+            tasksData: JSON.parse(api.getItems())
+        }
+
+        this.handleUpdateTaskRepo = this.handleUpdateTaskRepo.bind(this);
+    }
+
+    handleUpdateTaskRepo(taskItems){
         this.setState({
             tasksData: taskItems
         }, function(){
-            TaskApi.setItems(this.state.tasksData);
+            api.setItems(this.state.tasksData);
         });
-    },
-    render: function(){
+    }
+    render(){
         return (
             <div className="container-fluid">
                 <div className="col-md-12">
@@ -34,6 +39,4 @@ var TaskContainer = React.createClass({
             </div>
         );
     }
-});
-
-module.exports = TaskContainer;
+};

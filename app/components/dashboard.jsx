@@ -1,13 +1,11 @@
-var React = require('react');
+import React from 'react';
 
-var Dashboard = React.createClass({
-    render: function(){
+export default class Dashboard extends React.PureComponent{
+    render(){
         return (
             <div className="container-fluid">
                 <h3>Welcome to your Dashboard!</h3>
             </div>
             )
     }
-});
-
-module.exports = Dashboard;
+};

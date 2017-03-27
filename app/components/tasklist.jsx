@@ -1,94 +1,100 @@
-'use strict'
 
-var React = require('react');
-var TaskItem = require('./task');
-var _= require('lodash');
-var TaskModal = require('./taskmodal');
+import React from 'react';
+import TaskItem from './task';
+import _ from 'lodash';
+import TaskModal from'./taskmodal';
 import { Modal, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 
 
-var TaskList = React.createClass({
-    propTypes: {
-        taskItems: React.PropTypes.array,
-        onSaveChanges: React.PropTypes.func.isRequired
-    },
-    getInitialState: function () {
-        console.log("tasklist: getInitialState");
-        
-        return {
+class TaskList extends React.Component {
+    constructor(){
+        super()
+        this.state = {
             tasksData: [],
             showAddTaskModal: false
-        };
-    },
-    componentWillReceiveProps: function(){
+        }
+
+        this.generateNewId = this.generateNewId.bind(this);
+        this.renderItems = this.renderItems.bind(this);
+        this.handleTaskDelete = this.handleTaskDelete.bind(this);
+        this.handleTaskEdit = this.handleTaskEdit.bind(this);
+        this.handleTaskAdd = this.handleTaskAdd.bind(this);
+        this.handleSaveChanges = this.handleSaveChanges.bind(this);
+        this.handleOpenAddTaskModal = this.handleOpenAddTaskModal.bind(this);
+        this.handleCloseAddTaskModal = this.handleCloseAddTaskModal.bind(this);
+    }
+    componentWillReceiveProps(){
         console.log("tasklist: componentWillReceiveProps");
         
-    },
-    componentWillMount: function(){
+    }
+    componentWillMount(){
         this.setState({ tasksData: this.props.taskItems });
         console.log("tasklist: componentWillMount");
         
-    },
-    componentWillUpdate: function(){
+    }
+    componentWillUpdate(){
         console.log("tasklist: componentWillUpdate");
         
-    },
-    componentDidMount: function(){
+    }
+    componentDidMount(){
         console.log("tasklist: componentDidMount");
 
-    },
-    componentDidUpdate: function(){
+    }
+    componentDidUpdate(){
         console.log("tasklist: componentDidUpdate");
-        var latestItem = _.maxBy(this.state.tasksData, function(t){return t.id;});
+        let latestItem = _.maxBy(this.state.tasksData, function(t){return t.id;});
         console.log(latestItem.isEditable)
-    },
-    componentWillUnmount: function(){
+    }
+    componentWillUnmount(){
         console.log("tasklist: componentWillUnmount");
         
-    },
-    shouldComponentUpdate: function(){
+    }
+    shouldComponentUpdate(){
         console.log("tasklist: shouldComponentUpdate");
         return true;
         
-    },
-    renderItems: function () {
+    }
+    renderItems () {
         return this.state.tasksData.map(function (item) {
+            const taskItemProps = {
+                    id: item.id,
+                    name: item.name,
+                    description: item.description,
+                    priorityId: item.priorityId,
+                    statusId: item.statusId,
+                    isEditable: item.isEditable,
+                    onTaskDelete: this.handleTaskDelete,
+                    onTaskEdit: this.handleTaskEdit,
+            }
             return (
-                <TaskItem 
-                    key={item.id} 
-                    id={item.id} 
-                    name={item.name} 
-                    description={item.description} 
-                    priorityId={item.priorityId} 
-                    statusId={item.statusId}
-                    isEditable={item.isEditable} 
-                    onTaskDelete={this.handleTaskDelete}
-                    onTaskEdit={this.handleTaskEdit}/>
+                    <TaskItem key={item.id} {...taskItemProps}/>
             );
         }, this);
-    },
-    handleTaskDelete: function(taskId){
-        var index = -1;	
-        var taskListCount = this.state.tasksData.length;
-        var deletedTask = '';
-        var updatedArray = this.state.tasksData; //Don't modify the state's tasksData array directly
-        for( var i = 0; i < taskListCount; i++ ) {
+    }
+    handleTaskDelete(taskId){
+        let index = -1;	
+        let taskListCount = this.state.tasksData.length;
+        let deletedTask = '';
+        let updatedArray = this.state.tasksData; //Don't modify the state's tasksData array directly
+        for( let i = 0; i < taskListCount; i++ ) {
             if( updatedArray[i].id === taskId ) {
                 index = i;
                 deletedTask = updatedArray[i].name;
                 break;
             }
         }
-        updatedArray.splice( index, 1 );	
+        updatedArray.splice( index, 1 );
+        let message = "The task: " + deletedTask + " has been deleted.";
+        alert(message);
         this.setState( {tasksData: updatedArray} );
         console.log("handleTaskDelete");
         
-    },
-    handleTaskEdit: function(task){
-        var index = -1;	
-        var taskListCount = this.state.tasksData.length;
-        var updatedArray = this.state.tasksData.slice(); //Don't modify the state's tasksData array directly
-        for( var i = 0; i < taskListCount; i++ ) {
+    }
+    handleTaskEdit(task){
+        let index = -1;	
+        let taskListCount = this.state.tasksData.length;
+        let updatedArray = this.state.tasksData.slice(); //Don't modify the state's tasksData array directly
+        for( let i = 0; i < taskListCount; i++ ) {
             if( updatedArray[i].id === task.id ) {
                 updatedArray[i].name = task.name;
                 updatedArray[i].description = task.description;
@@ -101,33 +107,33 @@ var TaskList = React.createClass({
         this.setState( {tasksData: updatedArray} );
         console.log("tasklist: handleTaskEdit");
         
-    },
-    generateNewId: function(){
-        var maxObj = _.maxBy(this.state.tasksData, function(t){return t.id;});
+    }
+    generateNewId(){
+        let maxObj = _.maxBy(this.state.tasksData, function(t){return t.id;});
         return maxObj.id + 1;
-    },
-    handleTaskAdd: function(task){
+    }
+    handleTaskAdd(task){
         task.id = this.generateNewId();
-        var updatedTasks = this.state.tasksData.concat(task);
+        let updatedTasks = this.state.tasksData.concat(task);
         this.setState( {tasksData: updatedTasks} );
         this.setState({ showAddTaskModal: false });
         
         console.log("handleTaskAdd");
-    },
-    handleSaveChanges: function(){
+    }
+    handleSaveChanges(){
         if(confirm("Are you sure you want to save your changes to localStorage?")){
-            var savedTasksOnly = _.filter(this.state.tasksData, function(t){ return !t.isEditable; });
+            let savedTasksOnly = _.filter(this.state.tasksData, function(t){ return !t.isEditable; });
             this.props.onSaveChanges(savedTasksOnly);
             alert("localStorage updated");
         }
-    },
-    handleOpenAddTaskModal: function(){
+    }
+    handleOpenAddTaskModal(){
         this.setState({ showAddTaskModal: true });
-    },
-    handleCloseAddTaskModal: function(){
+    }
+    handleCloseAddTaskModal(){
         this.setState({ showAddTaskModal: false });
-    },
-    render: function(){
+    }
+    render(){
         console.log("tasklist: render");
         
         return (
@@ -160,6 +166,11 @@ var TaskList = React.createClass({
             </div>
             )
     }
-});
+}
 
-module.exports = TaskList;
+TaskList.propTypes = {
+    taskItems: React.PropTypes.array,
+    onSaveChanges: React.PropTypes.func.isRequired
+}
+
+export default TaskList;

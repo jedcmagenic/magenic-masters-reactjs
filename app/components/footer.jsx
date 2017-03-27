@@ -1,9 +1,8 @@
-'use strict'
 
-var React = require('react');
+import React from 'react';
 
-var Footer = React.createClass({
-    render: function(){
+export default class Footer extends React.PureComponent{
+    render(){
         return (
             <div className="col-xs-12 navbar-fixed-bottom">
                 <div className="col-xs-6">
@@ -20,6 +19,4 @@ var Footer = React.createClass({
             </div>
             )
     }
-});
-
-module.exports = Footer;
+};

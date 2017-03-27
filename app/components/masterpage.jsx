@@ -1,11 +1,10 @@
-'use strict'
 
-var React = require('react');
-var Header = require('./header.jsx');
-var Footer = require('./footer.jsx');
+import React from 'react';
+import Header from './header.jsx';
+import Footer from './footer.jsx';
 
-var MasterPage = React.createClass({
-    render: function(){
+export default class MasterPage extends React.PureComponent {
+    render(){
         return (
             <div>
                 <Header text="ReactJS: Kanban App" />
@@ -14,6 +13,4 @@ var MasterPage = React.createClass({
             </div>
             )
     }
-});
-
-module.exports = MasterPage;
+};
