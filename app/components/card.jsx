@@ -1,9 +1,8 @@
-'use strict'
 
-var React = require('react');
+import React from 'react';
 
-var Card = React.createClass({
-    render: function(){
+export default class Card extends React.PureComponent{
+    render(){
         return (
             <div className="card">
                 <div className="container">
@@ -12,8 +11,6 @@ var Card = React.createClass({
                     <a href="#" className="btn btn-primary">{this.props.buttonText}</a>
                 </div>
             </div>
-            )
+        )
     }
-});
-
-module.exports = Card;
+};

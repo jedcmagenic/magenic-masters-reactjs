@@ -1,13 +1,12 @@
-'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Bootstrap = require('bootstrap/dist/css/bootstrap.css');
-var Styles = require('../public/css/style.css');
-var MasterPage = require('./components/masterpage');
-var Dashboard = require('./components/dashboard');
-var Body = require('./components/body');
-var TaskContainer = require('./components/taskcontainer');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
+import Styles from '../public/css/style.css';
+import MasterPage from './components/masterpage';
+import Dashboard from './components/dashboard';
+import Body from './components/body';
+import TaskContainer from './components/taskcontainer';
 
 import { Router, Route, hashHistory } from 'react-router'
 

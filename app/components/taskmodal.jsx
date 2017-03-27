@@ -20,32 +20,27 @@ export default class TaskModal extends React.Component {
         this.handleSaveTask = this.handleSaveTask.bind(this);
     }
     componentWillMount(){
-        this.setState({
-            id: this.props.id,
-            name: this.props.name,
-            description: this.props.description,
-            priorityId: this.props.priorityId,
-            statusId: this.props.statusId
-        });
         console.log("taskModal: componentWillMount");
         
     }
     handleNameChange(event){
-        this.setState({name: event.currentTarget.value});
+        const inputName = event.target.value
+        this.setState({name: inputName});
     }
     handleDescriptionChange(event){
-        this.setState({description: event.currentTarget.value});
+        const inputDescription = event.target.value
+        this.setState({description: inputDescription});
     }
     handlePriorityChange(event){
-        let selectedPriorityId = parseInt(event.currentTarget.selectedOptions[0].value);
+        const selectedPriorityId = parseInt(event.currentTarget.selectedOptions[0].value);
         this.setState({priorityId: selectedPriorityId});
     }
     handleStatusChange(event){
-        let selectedStatusId = parseInt(event.currentTarget.selectedOptions[0].value);
+        const selectedStatusId = parseInt(event.currentTarget.selectedOptions[0].value);
         this.setState({statusId: selectedStatusId});
     }
     handleSaveTask(){
-        let taskObj = {
+        const taskObj = {
             id: this.state.id,
             name: this.state.name,
             description: this.state.description,

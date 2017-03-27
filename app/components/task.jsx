@@ -44,8 +44,7 @@ class TaskItem extends React.Component {
     }
     componentWillUnmount () {
         console.log("task: componentWillUnmount");
-        let message = "The task: " + this.state.name + " has been deleted.";
-        alert(message);
+        
         
     }
     shouldComponentUpdate(){

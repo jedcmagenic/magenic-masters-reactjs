@@ -83,7 +83,9 @@ class TaskList extends React.Component {
                 break;
             }
         }
-        updatedArray.splice( index, 1 );	
+        updatedArray.splice( index, 1 );
+        let message = "The task: " + deletedTask + " has been deleted.";
+        alert(message);
         this.setState( {tasksData: updatedArray} );
         console.log("handleTaskDelete");
         

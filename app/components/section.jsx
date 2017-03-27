@@ -1,10 +1,9 @@
-'use strict'
 
-var React = require('react');
-var Card = require('./card.jsx');
+import React from 'react';
+import Card  from './card';
 
-var Section = React.createClass({
-    render: function(){
+export default class Section extends React.PureComponent{
+    render(){
         return (
             <div className="col-md-12">
                 <div className="panel panel-default">
@@ -28,6 +27,4 @@ var Section = React.createClass({
             </div>
             )
     }
-});
-
-module.exports = Section;
+};
