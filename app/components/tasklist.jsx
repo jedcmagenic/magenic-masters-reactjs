@@ -11,7 +11,8 @@ class TaskList extends React.Component {
         super()
         this.state = {
             tasksData: [],
-            showAddTaskModal: false
+            showAddTaskModal: false,
+            isDirty: false
         }
 
         this.generateNewId = this.generateNewId.bind(this);
@@ -42,10 +43,14 @@ class TaskList extends React.Component {
     }
     componentDidUpdate(){
         console.log("tasklist: componentDidUpdate");
-        let latestItem = _.maxBy(this.state.tasksData, function(t){return t.id;});
-        console.log(latestItem.isEditable)
+        
     }
     componentWillUnmount(){
+        if(this.state.isDirty){
+            if(confirm("You are about to lose some unsaved changes. Would like to save them now?")){
+                this.handleSaveChanges();
+            }
+        }
         console.log("tasklist: componentWillUnmount");
         
     }
@@ -86,7 +91,7 @@ class TaskList extends React.Component {
         updatedArray.splice( index, 1 );
         let message = "The task: " + deletedTask + " has been deleted.";
         alert(message);
-        this.setState( {tasksData: updatedArray} );
+        this.setState( {tasksData: updatedArray, isDirty: true} );
         console.log("handleTaskDelete");
         
     }
@@ -104,19 +109,22 @@ class TaskList extends React.Component {
                 break;
             }
         }
-        this.setState( {tasksData: updatedArray} );
+        this.setState( {tasksData: updatedArray, isDirty: true} );
         console.log("tasklist: handleTaskEdit");
         
     }
     generateNewId(){
-        let maxObj = _.maxBy(this.state.tasksData, function(t){return t.id;});
-        return maxObj.id + 1;
+        if(this.state.tasksData.length){
+            let maxObj = _.maxBy(this.state.tasksData, function(t){return t.id;});
+            return maxObj.id + 1;
+        }
+        else
+            return 1;
     }
     handleTaskAdd(task){
         task.id = this.generateNewId();
         let updatedTasks = this.state.tasksData.concat(task);
-        this.setState( {tasksData: updatedTasks} );
-        this.setState({ showAddTaskModal: false });
+        this.setState( {tasksData: updatedTasks, isDirty: true, showAddTaskModal: false} );
         
         console.log("handleTaskAdd");
     }
@@ -125,6 +133,7 @@ class TaskList extends React.Component {
             let savedTasksOnly = _.filter(this.state.tasksData, function(t){ return !t.isEditable; });
             this.props.onSaveChanges(savedTasksOnly);
             alert("localStorage updated");
+            this.setState({isDirty: false});
         }
     }
     handleOpenAddTaskModal(){
@@ -155,7 +164,7 @@ class TaskList extends React.Component {
                 </div>
                 <div className="col-md-6 btn-toolbar">
                     <Button bsStyle="primary" onClick={this.handleOpenAddTaskModal}><span className="glyphicon glyphicon-plus"></span> Add Task</Button>
-                    <Button bsStyle="success" onClick={this.handleSaveChanges} title="Save changes to localStorage"><span className="glyphicon glyphicon-floppy-disk"></span> Save</Button>
+                    <Button bsStyle="success" onClick={this.handleSaveChanges} title="Save changes to localStorage" disabled={!this.state.isDirty}><span className="glyphicon glyphicon-floppy-disk"></span> Save</Button>
                 </div>
                 
                 <Modal show={this.state.showAddTaskModal} onHide={this.handleCloseAddTaskModal}>
