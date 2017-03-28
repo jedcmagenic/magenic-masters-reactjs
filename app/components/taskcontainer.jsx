@@ -9,18 +9,16 @@ export default class TaskContainer extends React.Component{
     constructor(){
         super()
         this.state ={
-            tasksData: JSON.parse(api.getItems())
+            tasksData: JSON.parse(api.getItems()),
         }
 
         this.handleUpdateTaskRepo = this.handleUpdateTaskRepo.bind(this);
     }
 
     handleUpdateTaskRepo(taskItems){
-        this.setState({
-            tasksData: taskItems
-        }, function(){
-            api.setItems(this.state.tasksData);
-        });
+        api.setItems(taskItems);
+    }
+    componentWillUnmount(){
     }
     render(){
         return (
