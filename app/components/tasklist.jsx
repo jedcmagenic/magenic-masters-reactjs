@@ -4,7 +4,8 @@ import TaskItem from './task';
 import _ from 'lodash';
 import TaskModal from'./taskmodal';
 import { Modal, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
-
+import toastr from 'toastr';
+import Router from 'react-router';
 
 class TaskList extends React.Component {
     constructor(){
@@ -23,6 +24,12 @@ class TaskList extends React.Component {
         this.handleSaveChanges = this.handleSaveChanges.bind(this);
         this.handleOpenAddTaskModal = this.handleOpenAddTaskModal.bind(this);
         this.handleCloseAddTaskModal = this.handleCloseAddTaskModal.bind(this);
+    }
+    static willTransitionFrom (transition, component){
+        debugger;
+        if(component.state.isDirty && !confirm("Leave unsaved changes?")){
+            transition.abort();
+        }
     }
     componentWillReceiveProps(){
         console.log("tasklist: componentWillReceiveProps");
@@ -46,11 +53,11 @@ class TaskList extends React.Component {
         
     }
     componentWillUnmount(){
-        if(this.state.isDirty){
-            if(confirm("You are about to lose some unsaved changes. Would like to save them now?")){
-                this.handleSaveChanges();
-            }
-        }
+        // if(this.state.isDirty){
+        //     if(confirm("You are about to lose some unsaved changes. Would like to save them now?")){
+        //         this.handleSaveChanges();
+        //     }
+        // }
         console.log("tasklist: componentWillUnmount");
         
     }
@@ -90,7 +97,7 @@ class TaskList extends React.Component {
         }
         updatedArray.splice( index, 1 );
         let message = "The task: " + deletedTask + " has been deleted.";
-        alert(message);
+        toastr.success(message);
         this.setState( {tasksData: updatedArray, isDirty: true} );
         console.log("handleTaskDelete");
         
@@ -181,5 +188,6 @@ TaskList.propTypes = {
     taskItems: React.PropTypes.array,
     onSaveChanges: React.PropTypes.func.isRequired
 }
+
 
 export default TaskList;

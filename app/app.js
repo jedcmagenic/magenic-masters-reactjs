@@ -7,7 +7,7 @@ import MasterPage from './components/masterpage';
 import Dashboard from './components/dashboard';
 import Body from './components/body';
 import TaskContainer from './components/taskcontainer';
-
+import ToastrScss from 'toastr/build/toastr.css'
 import { Router, Route, hashHistory } from 'react-router'
 
 ReactDOM.render(
