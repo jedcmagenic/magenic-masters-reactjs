@@ -1,4 +1,6 @@
 import React from 'react';
+import TaskPriority from '../constants/taskprioritytypes';
+import TaskStatus from '../constants/taskstatuses';
 
 class TaskItem extends React.Component {
     constructor (){
@@ -18,22 +20,23 @@ class TaskItem extends React.Component {
         this.props.onEditClick(taskToEdit);
     }
     handleDeleteClick(){
-        this.props.onDeleteClick(this.props.id);
+        if(confirm("Are you sure you want to delete the task " + this.props.name + "?"))
+            this.props.onDeleteClick(this.props.id);
     }
     getStatusValue (statusId){
         let statusValue = "";
         switch (statusId) {
             case 1:
-                statusValue = "To do"
+                statusValue = TaskStatus.TO_DO
                 break;
             case 2:
-                statusValue = "In Progress"
+                statusValue = TaskStatus.IN_PROGRESS
                 break;
             case 3:
-                statusValue = "Done"
+                statusValue = TaskStatus.DONE
                 break;
             default:
-                statusValue = "To do"
+                statusValue = TaskStatus.TO_DO
                 break;
         }
 
@@ -43,24 +46,22 @@ class TaskItem extends React.Component {
         let priorityValue = "";
         switch (priorityId) {
             case 1:
-                priorityValue = "Low"
+                priorityValue = TaskPriority.HIGH
                 break;
             case 2:
-                priorityValue = "Medium"
+                priorityValue = TaskPriority.MEDIUM
                 break;
             case 3:
-                priorityValue = "High"
+                priorityValue = TaskPriority.LOW
                 break;
             default:
-                priorityValue = "Low"
+                priorityValue = TaskPriority.LOW
                 break;
         }
 
         return priorityValue;
     }
     render (){
-        console.log("task: render");
-        
         return (
             <tr>
                 <td>

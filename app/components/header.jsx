@@ -32,7 +32,7 @@ export default class Header extends React.Component{
                             </ul>
                             <ul className="nav navbar-nav pull-right">
                                 <li>
-                                    <OverlayTrigger trigger="click" placement="bottom" overlay={prioritiesPopOver} rootClose="true">
+                                    <OverlayTrigger trigger="click" placement="bottom" overlay={prioritiesPopOver} rootClose={false}>
                                         <Link onClick={this.handleShowPriorityTasks}>Priority Tasks</Link>
                                     </OverlayTrigger>
                                 </li>

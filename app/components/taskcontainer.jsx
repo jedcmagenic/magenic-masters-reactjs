@@ -1,19 +1,17 @@
 
 import React from 'react';
 import TaskList from './tasklist';
-import TaskApi from '../api/tasks-api.js';
 import TaskModal from'./taskmodal';
 import { Button } from 'react-bootstrap';
 import toastr from 'toastr';
-
-
-const api = new TaskApi();
+import TaskActions from '../actions/taskactions.js';
+import TaskStore from '../stores/taskstore.js';
 
 export default class TaskContainer extends React.Component{
     constructor(){
         super()
         this.state ={
-            tasksData: api.getAllTasks(),
+            tasksData: TaskStore.getAllTasks(),
             showTaskModal: false,
             currentTask: {}
         }
@@ -43,10 +41,10 @@ export default class TaskContainer extends React.Component{
         });
     }
     handleDeleteTask(id){
-        api.deleteTask(id);
+        TaskActions.deleteTask(id);
         toastr.success("Task deleted");
         this.setState({
-            tasksData: api.getAllTasks()
+            tasksData: TaskStore.getAllTasks()
         });
     }
     handleCloseTaskModal(){
@@ -55,11 +53,15 @@ export default class TaskContainer extends React.Component{
         });
     }
     handleSaveTask(task){
-        api.saveTask(task);
+        if(task.id > 0){
+            TaskActions.updateTask(task)
+        } else {
+            TaskActions.addTask(task)
+        }
         toastr.success("Task saved");
         this.setState({
             showTaskModal:false,
-            tasksData: api.getAllTasks()
+            tasksData: TaskStore.getAllTasks()
         });
     }
     render(){

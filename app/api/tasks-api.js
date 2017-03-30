@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { TasksData } from './tasksdata';
 
-export default class TaskApi {
+class TaskApi {
     getAllTasks(){
         return JSON.parse(JSON.stringify(TasksData));
     }
@@ -18,8 +18,13 @@ export default class TaskApi {
             task.id = maxObj.id + 1;
             TasksData.push(task);
         }
+
+        return JSON.parse(JSON.stringify(task));
     }
     deleteTask(id){
         _.remove(TasksData, {id: id});
     }
-};
+}
+const taskApi = new TaskApi();
+
+export default taskApi; 
