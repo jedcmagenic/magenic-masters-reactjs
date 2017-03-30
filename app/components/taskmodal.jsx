@@ -14,6 +14,7 @@ export default class TaskModal extends React.Component {
             priorityId: 1,
             statusId: 1
         }
+
         this.handleCloseTaskModal = this.handleCloseTaskModal.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
@@ -21,9 +22,14 @@ export default class TaskModal extends React.Component {
         this.handleStatusChange = this.handleStatusChange.bind(this);
         this.handleSaveTask = this.handleSaveTask.bind(this);
     }
-    componentWillMount(){
-        console.log("taskModal: componentWillMount");
-        
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            id: nextProps.task.id,
+            name: nextProps.task.name,
+            description: nextProps.task.description,
+            priorityId: nextProps.task.priorityId,
+            statusId: nextProps.task.statusId
+        })
     }
     handleNameChange(event){
         const inputName = event.target.value
@@ -49,18 +55,26 @@ export default class TaskModal extends React.Component {
             priorityId: this.state.priorityId,
             statusId: this.state.statusId,
         }
+
+        this.setState({
+            id: 0,
+            name: '',
+            description: '',
+            priorityId: 1,
+            statusId: 1
+        });
         this.props.onSaveTask(taskObj);
     }
     handleCloseTaskModal(){
         this.props.onCancelClick();
     }
     render(){
-        console.log("taskModal: render");
-        
+        let mode = this.state.id ? 'Edit Task': 'Add Task';    
         return (
+            <Modal show={this.props.show} onHide={this.handleCloseTaskModal}>
             <div>
                 <Modal.Header closeButton>
-                    <Modal.Title>Add Task</Modal.Title>
+                    <Modal.Title>{mode}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form>
@@ -90,6 +104,7 @@ export default class TaskModal extends React.Component {
                     <Button onClick={this.handleCloseTaskModal}>Cancel</Button>
                 </Modal.Footer>
             </div>
+            </Modal>
             )
     }
 }
