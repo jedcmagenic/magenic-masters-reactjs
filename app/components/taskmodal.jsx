@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { Modal, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+import InputFormControl from './common/inputformcontrol';
+import SelectFormControl from './common/selectformcontrol';
 
 export default class TaskModal extends React.Component {
     constructor(){
@@ -10,18 +12,28 @@ export default class TaskModal extends React.Component {
             name: '',
             description: '',
             priorityId: 1,
-            statusId: 1
+            statusId: 1,
+            nameError: '',
+            descriptionError: ''
         }
-        this.handleCloseAddTaskModal = this.handleCloseAddTaskModal.bind(this);
+
+        this.handleCloseTaskModal = this.handleCloseTaskModal.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
         this.handlePriorityChange = this.handlePriorityChange.bind(this);
         this.handleStatusChange = this.handleStatusChange.bind(this);
         this.handleSaveTask = this.handleSaveTask.bind(this);
     }
-    componentWillMount(){
-        console.log("taskModal: componentWillMount");
-        
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            id: nextProps.task.id,
+            name: nextProps.task.name,
+            description: nextProps.task.description,
+            priorityId: nextProps.task.priorityId,
+            statusId: nextProps.task.statusId,
+            nameError: '',
+            descriptionError: ''
+        })
     }
     handleNameChange(event){
         const inputName = event.target.value
@@ -40,6 +52,23 @@ export default class TaskModal extends React.Component {
         this.setState({statusId: selectedStatusId});
     }
     handleSaveTask(){
+        let hasErrors = false;
+        if(!this.state.name){
+            hasErrors = true;
+            this.setState({
+                nameError: "Please enter a task name"
+            })
+        }
+        if(this.state.description && this.state.description.length < 3){
+            hasErrors = true;
+            this.setState({
+                descriptionError: "Description must be more than 3 characters"
+            })
+        }
+
+        if(hasErrors)
+            return;
+
         const taskObj = {
             id: this.state.id,
             name: this.state.name,
@@ -47,55 +76,56 @@ export default class TaskModal extends React.Component {
             priorityId: this.state.priorityId,
             statusId: this.state.statusId,
         }
+
+        this.setState({
+            id: 0,
+            name: '',
+            description: '',
+            priorityId: 1,
+            statusId: 1
+        });
         this.props.onSaveTask(taskObj);
     }
-    handleCloseAddTaskModal(){
+    handleCloseTaskModal(){
         this.props.onCancelClick();
     }
     render(){
-        console.log("taskModal: render");
-        
+        let mode = this.state.id ? 'Edit Task': 'Add Task';    
         return (
+            <Modal show={this.props.show} onHide={this.handleCloseTaskModal}>
             <div>
                 <Modal.Header closeButton>
-                    <Modal.Title>Add Task</Modal.Title>
+                    <Modal.Title>{mode}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form>
-                        <FormGroup controlId="txtTaskName">
-                        <ControlLabel>Task name</ControlLabel>
-                        <FormControl type="text" value={this.state.name} onChange={this.handleNameChange}/>
-                        </FormGroup>
+                        <InputFormControl name="taskName" label="Task Name" onChangeEvent={this.handleNameChange} placeholder="Name"
+                            value={this.state.name} error={this.state.nameError}/>
 
-                        <FormGroup controlId="txtTaskDescription">
-                        <ControlLabel>Task description</ControlLabel>
-                        <FormControl type="text" value={this.state.description} onChange={this.handleDescriptionChange}/>
-                        </FormGroup>
+                        <InputFormControl name="taskDescription" label="Task Description" onChangeEvent={this.handleDescriptionChange} placeholder="Description"
+                            value={this.state.description} error={this.state.descriptionError}/>
 
-                        <FormGroup controlId="selPriority">
-                        <ControlLabel>Priority</ControlLabel>
-                        <FormControl componentClass="select" value={this.state.priorityId} onChange={this.handlePriorityChange}>
-                            <option value="1">Low</option>
-                            <option value="2">Medium</option>
-                            <option value="3">High</option>
-                        </FormControl>
-                        </FormGroup>
+                        <SelectFormControl name="taskPriority" label="Task Priority" 
+                            options={[{id: "1", name: 'Low'}
+                                    , {id: "2", name: 'Medium'}
+                                    , {id: "3", name: 'High'}]} 
+                            onChangeEvent={this.handlePriorityChange} placeholder="Select Priority"
+                            value={this.state.priorityId} />
 
-                        <FormGroup controlId="selStatus">
-                        <ControlLabel>Status</ControlLabel>
-                        <FormControl componentClass="select" value={this.state.statusId} onChange={this.handleStatusChange}>
-                            <option value="1">To do</option>
-                            <option value="2">In Progress</option>
-                            <option value="3">Done</option>
-                        </FormControl>
-                        </FormGroup>
+                        <SelectFormControl name="taskStatus" label="Task Status" 
+                            options={[{id: "1", name: 'To Do'}
+                                    , {id: "2", name: 'In Progress'}
+                                    , {id: "3", name: 'Done'}]} 
+                            onChangeEvent={this.handleStatusChange} placeholder="Select Status"
+                            value={this.state.statusId} />
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button bsStyle="primary" onClick={this.handleSaveTask}>Save</Button>
-                    <Button onClick={this.handleCloseAddTaskModal}>Cancel</Button>
+                    <Button onClick={this.handleCloseTaskModal}>Cancel</Button>
                 </Modal.Footer>
             </div>
+            </Modal>
             )
     }
 }

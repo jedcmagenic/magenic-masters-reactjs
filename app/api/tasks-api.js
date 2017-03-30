@@ -1,31 +1,30 @@
-export default class TaskApi {
-    init(){
-        if(!localStorage.getItem('tasks'))
-        {
-            localStorage.setItem('tasks', JSON.stringify([
-                { id: 1, name: "Buy mountain bike", description: "The goal of this task is for you to have your own bike", priorityId: 1, statusId: 3, isEditable: false },
-                { id: 2, name: "Buy car", description: "The goal of this task is for you to have your own car", priorityId: 1, statusId: 1, isEditable: false },
-                { id: 3, name: "Buy condominium", description: "The goal of this task is for you to have your own condo", priorityId: 2, statusId: 3, isEditable: false },
-                { id: 4, name: "Buy house and lot", description: "The goal of this task is for you to have a place for the entire family", priorityId: 3, statusId: 1, isEditable: false },
-                { id: 5, name: "Buy restaurant", description: "The goal of this task is for you to have your own business", priorityId: 3, statusId: 1, isEditable: false },
-                { id: 6, name: "Buy company", description: "The goal of this task is for you to have your own life", priorityId: 2, statusId: 2, isEditable: false }
-                //Add items here, then click 'Refresh' to reload localStorage
-            ]));
-        }
+import _ from 'lodash';
+import { TasksData } from './tasksdata';
+
+class TaskApi {
+    getAllTasks(){
+        return JSON.parse(JSON.stringify(TasksData));
     }
-    getItems(){
-        if(!localStorage.getItem('tasks'))
-        {
-            this.init();
+    getTaskById(id){
+        let task = _.find(TasksData, {id: id});
+        return JSON.parse(JSON.stringify(task));
+    }
+    saveTask(task){
+        if(task.id){
+            let existingTaskIndex = _.indexOf(TasksData, _.find(TasksData, {id: task.id}))
+            TasksData.splice(existingTaskIndex, 1, task);
+        }else{
+            let maxObj = _.maxBy(TasksData, function(t){return t.id;});
+            task.id = maxObj.id + 1;
+            TasksData.push(task);
         }
 
-        return localStorage.getItem('tasks');
+        return JSON.parse(JSON.stringify(task));
     }
-    setItems(tasks){
-        localStorage.setItem('tasks', JSON.stringify(tasks));
+    deleteTask(id){
+        _.remove(TasksData, {id: id});
     }
-    refreshData(){
-        localStorage.clear();
-        this.init();
-    }
-};
+}
+const taskApi = new TaskApi();
+
+export default taskApi; 

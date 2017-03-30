@@ -1,25 +1,67 @@
 
 import React from 'react';
 import TaskList from './tasklist';
-import TaskApi from '../api/tasks-api.js';
-
-const api = new TaskApi();
+import TaskModal from'./taskmodal';
+import { Button } from 'react-bootstrap';
+import toastr from 'toastr';
+import TaskActions from '../actions/taskactions.js';
+import TaskStore from '../stores/taskstore.js';
 
 export default class TaskContainer extends React.Component{
     constructor(){
         super()
         this.state ={
-            tasksData: JSON.parse(api.getItems())
+            tasksData: TaskStore.getAllTasks(),
+            showTaskModal: false,
+            currentTask: {}
         }
 
-        this.handleUpdateTaskRepo = this.handleUpdateTaskRepo.bind(this);
+        this.handleAddTask = this.handleAddTask.bind(this);
+        this.handleEditTask = this.handleEditTask.bind(this);
+        this.handleDeleteTask = this.handleDeleteTask.bind(this);
+        this.handleCloseTaskModal = this.handleCloseTaskModal.bind(this);
+        this.handleSaveTask = this.handleSaveTask.bind(this);
     }
-
-    handleUpdateTaskRepo(taskItems){
+    handleAddTask(){
         this.setState({
-            tasksData: taskItems
-        }, function(){
-            api.setItems(this.state.tasksData);
+            currentTask: {
+                id:0,
+                name:'',
+                description:'',
+                statusId:1,
+                priorityId:1
+            },
+            showTaskModal: true
+        });
+    }
+    handleEditTask(task){
+        this.setState({
+            currentTask: task,
+            showTaskModal: true
+        });
+    }
+    handleDeleteTask(id){
+        TaskActions.deleteTask(id);
+        toastr.success("Task deleted");
+        this.setState({
+            tasksData: TaskStore.getAllTasks()
+        });
+    }
+    handleCloseTaskModal(){
+        this.setState({
+            showTaskModal: false
+        });
+    }
+    handleSaveTask(task){
+        if(task.id > 0){
+            TaskActions.updateTask(task)
+        } else {
+            TaskActions.addTask(task)
+        }
+        toastr.success("Task saved");
+        this.setState({
+            showTaskModal:false,
+            tasksData: TaskStore.getAllTasks()
         });
     }
     render(){
@@ -32,9 +74,18 @@ export default class TaskContainer extends React.Component{
                         <div className="panel-body">
                             <TaskList 
                                 taskItems={ this.state.tasksData } 
-                                onSaveChanges={this.handleUpdateTaskRepo}/>
+                                onEditTask={this.handleEditTask}
+                                onDeleteTask={this.handleDeleteTask}/>
+                            <div className="col-md-6 btn-toolbar">
+                                <Button bsStyle="primary" onClick={this.handleAddTask}><span className="glyphicon glyphicon-plus"></span> Add Task</Button>
+                            </div>
                         </div>
                     </div>
+                    <TaskModal 
+                        show={this.state.showTaskModal}
+                        task={this.state.currentTask}
+                        onSaveTask={this.handleSaveTask}
+                        onCancelClick={this.handleCloseTaskModal}/>
                 </div>
             </div>
         );
