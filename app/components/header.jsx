@@ -1,9 +1,25 @@
 
 import React from 'react';
 import { Link } from 'react-router'
+import { OverlayTrigger, Button, Popover  } from 'react-bootstrap';
+import PriorityTasks from './prioritytasks';
 
-export default class Header extends React.PureComponent{
+export default class Header extends React.Component{
+    constructor(){
+        super()
+        this.state={
+
+        }
+    }
+    handleShowPriorityTasks(){
+
+    }
     render(){
+        const prioritiesPopOver = (
+            <Popover id="popover-positioned-left" title="Utmost Priority">
+                <PriorityTasks />
+            </Popover>
+        );
         return (
             <div>
                 <nav className="navbar navbar-inverse">
@@ -16,6 +32,13 @@ export default class Header extends React.PureComponent{
                             <ul className="nav navbar-nav">
                                 <li><Link to="/taskList">Tasks</Link></li>
                                 <li><Link to="/kanban">Kanban</Link></li>
+                            </ul>
+                            <ul className="nav navbar-nav pull-right">
+                                <li>
+                                    <OverlayTrigger trigger="click" placement="bottom" overlay={prioritiesPopOver} rootClose="true">
+                                        <Link onClick={this.handleShowPriorityTasks}>Priority Tasks</Link>
+                                    </OverlayTrigger>
+                                </li>
                             </ul>
                         </div>
                     </div>
