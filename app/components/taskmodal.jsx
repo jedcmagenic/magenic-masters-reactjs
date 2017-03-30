@@ -12,7 +12,9 @@ export default class TaskModal extends React.Component {
             name: '',
             description: '',
             priorityId: 1,
-            statusId: 1
+            statusId: 1,
+            nameError: '',
+            descriptionError: ''
         }
 
         this.handleCloseTaskModal = this.handleCloseTaskModal.bind(this);
@@ -28,7 +30,9 @@ export default class TaskModal extends React.Component {
             name: nextProps.task.name,
             description: nextProps.task.description,
             priorityId: nextProps.task.priorityId,
-            statusId: nextProps.task.statusId
+            statusId: nextProps.task.statusId,
+            nameError: '',
+            descriptionError: ''
         })
     }
     handleNameChange(event){
@@ -48,6 +52,23 @@ export default class TaskModal extends React.Component {
         this.setState({statusId: selectedStatusId});
     }
     handleSaveTask(){
+        let hasErrors = false;
+        if(!this.state.name){
+            hasErrors = true;
+            this.setState({
+                nameError: "Please enter a task name"
+            })
+        }
+        if(this.state.description && this.state.description.length < 3){
+            hasErrors = true;
+            this.setState({
+                descriptionError: "Description must be more than 3 characters"
+            })
+        }
+
+        if(hasErrors)
+            return;
+
         const taskObj = {
             id: this.state.id,
             name: this.state.name,
@@ -79,10 +100,10 @@ export default class TaskModal extends React.Component {
                 <Modal.Body>
                     <form>
                         <InputFormControl name="taskName" label="Task Name" onChangeEvent={this.handleNameChange} placeholder="Name"
-                            value={this.state.name} />
+                            value={this.state.name} error={this.state.nameError}/>
 
                         <InputFormControl name="taskDescription" label="Task Description" onChangeEvent={this.handleDescriptionChange} placeholder="Description"
-                            value={this.state.description} />
+                            value={this.state.description} error={this.state.descriptionError}/>
 
                         <SelectFormControl name="taskPriority" label="Task Priority" 
                             options={[{id: "1", name: 'Low'}

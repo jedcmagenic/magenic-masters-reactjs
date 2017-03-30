@@ -7,9 +7,6 @@ import PriorityTasks from './prioritytasks';
 export default class Header extends React.Component{
     constructor(){
         super()
-        this.state={
-
-        }
     }
     handleShowPriorityTasks(){
 
