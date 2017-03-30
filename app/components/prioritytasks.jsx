@@ -2,6 +2,7 @@
 import React from 'react';
 import {Popover} from 'react-bootstrap';
 import TaskStore from '../stores/taskstore.js';
+import { Link } from 'react-router'
 
 class PriorityTasks extends React.Component {
     constructor(){
@@ -39,6 +40,10 @@ class PriorityTasks extends React.Component {
                 <ul>
                     {this.renderItems()}
                 </ul>
+                    <br/>
+                <div className="text-center" >
+                    <Link to="/taskList">View All</Link>
+                </div>
             </div>
             )
     }

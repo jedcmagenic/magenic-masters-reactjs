@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Modal, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
-import InputFormControl from './common/inputformcontrol';
+import TextInputFormControl from './common/textinputformcontrol';
+import NumericInputFormControl from './common/numericinputformcontrol';
 import SelectFormControl from './common/selectformcontrol';
 
 export default class TaskModal extends React.Component {
@@ -13,6 +14,8 @@ export default class TaskModal extends React.Component {
             description: '',
             priorityId: 1,
             statusId: 1,
+            hours: 0,
+            minutes: 0,
             nameError: '',
             descriptionError: ''
         }
@@ -22,6 +25,8 @@ export default class TaskModal extends React.Component {
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
         this.handlePriorityChange = this.handlePriorityChange.bind(this);
         this.handleStatusChange = this.handleStatusChange.bind(this);
+        this.handleDurationHoursChange = this.handleDurationHoursChange.bind(this);
+        this.handleDurationMinutesChange = this.handleDurationMinutesChange.bind(this);
         this.handleSaveTask = this.handleSaveTask.bind(this);
     }
     componentWillReceiveProps(nextProps){
@@ -31,6 +36,8 @@ export default class TaskModal extends React.Component {
             description: nextProps.task.description,
             priorityId: nextProps.task.priorityId,
             statusId: nextProps.task.statusId,
+            hours: nextProps.task.hours,
+            minutes: nextProps.task.minutes,
             nameError: '',
             descriptionError: ''
         })
@@ -50,6 +57,14 @@ export default class TaskModal extends React.Component {
     handleStatusChange(event){
         const selectedStatusId = parseInt(event.currentTarget.selectedOptions[0].value);
         this.setState({statusId: selectedStatusId});
+    }
+    handleDurationHoursChange(event){
+        const hoursValue = parseInt(event.target.value);
+        this.setState({hours: hoursValue});
+    }
+    handleDurationMinutesChange(event){
+        const minutesValue = parseInt(event.target.value);
+        this.setState({minutes: minutesValue});
     }
     handleSaveTask(){
         let hasErrors = false;
@@ -75,6 +90,8 @@ export default class TaskModal extends React.Component {
             description: this.state.description,
             priorityId: this.state.priorityId,
             statusId: this.state.statusId,
+            hours: parseInt(this.state.hours),
+            minutes: parseInt(this.state.minutes)
         }
 
         this.setState({
@@ -99,10 +116,10 @@ export default class TaskModal extends React.Component {
                 </Modal.Header>
                 <Modal.Body>
                     <form>
-                        <InputFormControl name="taskName" label="Task Name" onChangeEvent={this.handleNameChange} placeholder="Name"
+                        <TextInputFormControl name="taskName" label="Task Name" onChangeEvent={this.handleNameChange} placeholder="Name"
                             value={this.state.name} error={this.state.nameError}/>
 
-                        <InputFormControl name="taskDescription" label="Task Description" onChangeEvent={this.handleDescriptionChange} placeholder="Description"
+                        <TextInputFormControl name="taskDescription" label="Task Description" onChangeEvent={this.handleDescriptionChange} placeholder="Description"
                             value={this.state.description} error={this.state.descriptionError}/>
 
                         <SelectFormControl name="taskPriority" label="Task Priority" 
@@ -118,6 +135,11 @@ export default class TaskModal extends React.Component {
                                     , {id: "3", name: 'Done'}]} 
                             onChangeEvent={this.handleStatusChange} placeholder="Select Status"
                             value={this.state.statusId} />
+                        <NumericInputFormControl name="durationHours" label="Duration(Hours)" onChangeEvent={this.handleDurationHoursChange} placeholder="0"
+                            value={this.state.hours} error={this.state.descriptionError} />
+                        
+                        <NumericInputFormControl name="durationMinutes" label="Duration(Minutes)" onChangeEvent={this.handleDurationMinutesChange} placeholder="0"
+                            value={this.state.minutes} error={this.state.descriptionError} maxValue="60"/>
                     </form>
                 </Modal.Body>
                 <Modal.Footer>

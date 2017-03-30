@@ -10,6 +10,7 @@ import TaskContainer from './components/taskcontainer';
 import ToastrScss from 'toastr/build/toastr.css'
 import { Router, Route, hashHistory } from 'react-router'
 import InitializeActions from './actions/initializeactions';
+import TimerPage from './components/timerpage';
 
 InitializeActions.initApp();
 
@@ -19,6 +20,7 @@ ReactDOM.render(
                 <Route path="/" component={Dashboard} />
                 <Route path="/taskList" component={TaskContainer}/>
                 <Route path="/kanban" component={Body}/>
+                <Route path="/timer" component={TimerPage}/>
             </Route>
         </Router>
     , document.getElementById('root')

@@ -15,7 +15,8 @@ class TaskItem extends React.Component {
             name: this.props.name,
             description: this.props.description,
             priorityId: this.props.priorityId,
-            statusId: this.props.statusId
+            statusId: this.props.statusId,
+            duration: this.props.duration
         }
         this.props.onEditClick(taskToEdit);
     }
@@ -71,6 +72,7 @@ class TaskItem extends React.Component {
                 </td>
                 <td className="text-center middle">{this.getPriorityValue(this.props.priorityId)}</td>
                 <td className="text-center">{this.getStatusValue(this.props.statusId)}</td>
+                <td className="text-center">{this.props.duration}</td>
                 <td className="text-center">
                     <div className="btn-group">
                         <button type="button" className="btn btn-primary glyphicon glyphicon-edit" onClick={this.handleEditClick}></button>
@@ -88,6 +90,7 @@ TaskItem.propTypes = {
     description: React.PropTypes.string,
     priorityId: React.PropTypes.number.isRequired,
     statusId: React.PropTypes.number.isRequired,
+    duration: React.PropTypes.string,
     onEditClick: React.PropTypes.func.isRequired,
     onDeleteClick: React.PropTypes.func.isRequired
 };

@@ -19,6 +19,7 @@ class TaskList extends React.Component {
                     description: item.description,
                     priorityId: item.priorityId,
                     statusId: item.statusId,
+                    duration: item.hours + " hr " + item.minutes + " mins",
                     onEditClick: this.handleTaskEdit,
                     onDeleteClick: this.handleTaskDelete,
             }
@@ -44,6 +45,7 @@ class TaskList extends React.Component {
                             <th className="text-center">Task Details</th>
                             <th className="text-center">Priority</th>
                             <th className="text-center">Status</th>
+                            <th className="text-center">Duration</th>
                             <th className="text-center"></th>
                         </tr>
                     </thead>

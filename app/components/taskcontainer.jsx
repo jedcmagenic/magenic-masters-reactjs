@@ -29,7 +29,9 @@ export default class TaskContainer extends React.Component{
                 name:'',
                 description:'',
                 statusId:1,
-                priorityId:1
+                priorityId:1,
+                hours:0,
+                minutes:0
             },
             showTaskModal: true
         });
