@@ -1,6 +1,6 @@
 import React from 'react';
-import TaskPriority from '../constants/taskprioritytypes';
-import TaskStatus from '../constants/taskstatuses';
+import TaskPriority from '../../constants/taskprioritytypes';
+import TaskStatus from '../../constants/taskstatuses';
 
 class TaskItem extends React.Component {
     constructor (){
@@ -47,13 +47,13 @@ class TaskItem extends React.Component {
         let priorityValue = "";
         switch (priorityId) {
             case 1:
-                priorityValue = TaskPriority.HIGH
+                priorityValue = TaskPriority.LOW
                 break;
             case 2:
                 priorityValue = TaskPriority.MEDIUM
                 break;
             case 3:
-                priorityValue = TaskPriority.LOW
+                priorityValue = TaskPriority.HIGH
                 break;
             default:
                 priorityValue = TaskPriority.LOW

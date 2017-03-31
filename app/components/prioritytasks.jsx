@@ -3,18 +3,24 @@ import React from 'react';
 import {Popover} from 'react-bootstrap';
 import TaskStore from '../stores/taskstore.js';
 import { Link } from 'react-router'
+import _ from 'lodash';
 
 class PriorityTasks extends React.Component {
     constructor(){
         super()
         this.state = {
-            highPriorityTasks: TaskStore.getTasksByPriorityId(1),
+            highPriorityTasks: this._getTasks(),
         }
 
         this.renderItems = this.renderItems.bind(this);
         this.onChange = this.onChange.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
+    }
+    _getTasks(){
+        return _.filter(TaskStore.getTasksByPriorityId(3), taskItem => {
+            return taskItem.statusId != 3 ;
+        });
     }
     componentWillMount(){
         TaskStore.addChangeListener(this.onChange);
@@ -24,7 +30,7 @@ class PriorityTasks extends React.Component {
     }
     onChange(){
         this.setState({
-            highPriorityTasks: TaskStore.getTasksByPriorityId(3)
+            highPriorityTasks: this._getTasks()
         })
     }
     renderItems(){

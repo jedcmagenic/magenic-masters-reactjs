@@ -1,9 +1,11 @@
 
 import React from 'react';
 import { Modal, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
-import TextInputFormControl from './common/textinputformcontrol';
-import NumericInputFormControl from './common/numericinputformcontrol';
-import SelectFormControl from './common/selectformcontrol';
+import TextInputFormControl from '../common/textinputformcontrol';
+import NumericInputFormControl from '../common/numericinputformcontrol';
+import SelectFormControl from '../common/selectformcontrol';
+import TaskPriorityTypes from '../../constants/taskprioritytypes';
+import TaskStatuses from '../../constants/taskstatuses';
 
 export default class TaskModal extends React.Component {
     constructor(){
@@ -123,23 +125,23 @@ export default class TaskModal extends React.Component {
                             value={this.state.description} error={this.state.descriptionError}/>
 
                         <SelectFormControl name="taskPriority" label="Task Priority" 
-                            options={[{id: "1", name: 'Low'}
-                                    , {id: "2", name: 'Medium'}
-                                    , {id: "3", name: 'High'}]} 
+                            options={[{id: "1", name: TaskPriorityTypes.LOW}
+                                    , {id: "2", name: TaskPriorityTypes.MEDIUM}
+                                    , {id: "3", name: TaskPriorityTypes.HIGH}]} 
                             onChangeEvent={this.handlePriorityChange} placeholder="Select Priority"
                             value={this.state.priorityId} />
 
                         <SelectFormControl name="taskStatus" label="Task Status" 
-                            options={[{id: "1", name: 'To Do'}
-                                    , {id: "2", name: 'In Progress'}
-                                    , {id: "3", name: 'Done'}]} 
+                            options={[{id: "1", name: TaskStatuses.TO_DO}
+                                    , {id: "2", name: TaskStatuses.IN_PROGRESS}
+                                    , {id: "3", name: TaskStatuses.DONE}]} 
                             onChangeEvent={this.handleStatusChange} placeholder="Select Status"
                             value={this.state.statusId} />
-                        <NumericInputFormControl name="durationHours" label="Duration(Hours)" onChangeEvent={this.handleDurationHoursChange} placeholder="0"
+                        {/*<NumericInputFormControl name="durationHours" label="Duration(Hours)" onChangeEvent={this.handleDurationHoursChange} placeholder="0"
                             value={this.state.hours} error={this.state.descriptionError} />
                         
                         <NumericInputFormControl name="durationMinutes" label="Duration(Minutes)" onChangeEvent={this.handleDurationMinutesChange} placeholder="0"
-                            value={this.state.minutes} error={this.state.descriptionError} maxValue="60"/>
+                            value={this.state.minutes} error={this.state.descriptionError} maxValue="60"/>*/}
                     </form>
                 </Modal.Body>
                 <Modal.Footer>

@@ -4,14 +4,14 @@ import TaskList from './tasklist';
 import TaskModal from'./taskmodal';
 import { Button } from 'react-bootstrap';
 import toastr from 'toastr';
-import TaskActions from '../actions/taskactions.js';
-import TaskStore from '../stores/taskstore.js';
+import TaskActions from '../../actions/taskactions.js';
+import TaskStore from '../../stores/taskstore.js';
 
-export default class TaskContainer extends React.Component{
-    constructor(){
-        super()
+class TaskContainer extends React.Component{
+    constructor(props){
+        super(props)
         this.state ={
-            tasksData: TaskStore.getAllTasks(),
+            tasksData: props.tasks,
             showTaskModal: false,
             currentTask: {}
         }
@@ -21,6 +21,12 @@ export default class TaskContainer extends React.Component{
         this.handleDeleteTask = this.handleDeleteTask.bind(this);
         this.handleCloseTaskModal = this.handleCloseTaskModal.bind(this);
         this.handleSaveTask = this.handleSaveTask.bind(this);
+        this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
+    }
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            tasksData: nextProps.tasks
+        });
     }
     handleAddTask(){
         this.setState({
@@ -45,9 +51,7 @@ export default class TaskContainer extends React.Component{
     handleDeleteTask(id){
         TaskActions.deleteTask(id);
         toastr.success("Task deleted");
-        this.setState({
-            tasksData: TaskStore.getAllTasks()
-        });
+        this.props.onChange();
     }
     handleCloseTaskModal(){
         this.setState({
@@ -63,33 +67,33 @@ export default class TaskContainer extends React.Component{
         toastr.success("Task saved");
         this.setState({
             showTaskModal:false,
-            tasksData: TaskStore.getAllTasks()
         });
+
+        this.props.onChange();
     }
     render(){
         return (
-            <div className="container-fluid">
-                <div className="col-md-12">
-                    <h2>Tasks Masterlist</h2>
-                    <div className="panel panel-primary">
-                        <div className="panel-heading">Task Master List </div>
-                        <div className="panel-body">
-                            <TaskList 
-                                taskItems={ this.state.tasksData } 
-                                onEditTask={this.handleEditTask}
-                                onDeleteTask={this.handleDeleteTask}/>
-                            <div className="col-md-6 btn-toolbar">
-                                <Button bsStyle="primary" onClick={this.handleAddTask}><span className="glyphicon glyphicon-plus"></span> Add Task</Button>
-                            </div>
-                        </div>
-                    </div>
-                    <TaskModal 
-                        show={this.state.showTaskModal}
-                        task={this.state.currentTask}
-                        onSaveTask={this.handleSaveTask}
-                        onCancelClick={this.handleCloseTaskModal}/>
+            <div>
+                <TaskList 
+                    taskItems={ this.state.tasksData } 
+                    onEditTask={this.handleEditTask}
+                    onDeleteTask={this.handleDeleteTask}/>
+                <div className="col-md-6 btn-toolbar">
+                    <Button bsStyle="primary" onClick={this.handleAddTask}><span className="glyphicon glyphicon-plus"></span> Add Task</Button>
                 </div>
+                <TaskModal 
+                    show={this.state.showTaskModal}
+                    task={this.state.currentTask}
+                    onSaveTask={this.handleSaveTask}
+                    onCancelClick={this.handleCloseTaskModal}/>
             </div>
         );
     }
 };
+
+TaskContainer.propTypes = {
+    tasks: React.PropTypes.array.isRequired,
+    onChange: React.PropTypes.func.isRequired
+}
+
+export default TaskContainer;
