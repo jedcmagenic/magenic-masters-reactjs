@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router'
 import { OverlayTrigger, Button, Popover  } from 'react-bootstrap';
-import PriorityTasks from './prioritytasks';
+import PriorityTasks from './task/prioritytasks';
 
 export default class Header extends React.Component{
     constructor(){

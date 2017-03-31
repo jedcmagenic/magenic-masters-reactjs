@@ -45,9 +45,9 @@ class TimerContainer extends React.Component {
     }
     render (){
         return (
-            <div className=" panel panel-primary text-center">
+            <div className=" panel panel-primary">
                 <div className="panel-heading">Pomodoro Timer </div>
-                <div className="panel-body">
+                <div className="panel-body text-center">
                 <ButtonGroup>
                     <Button onClick={this.handlePomodoroClick} className={(this.state.timerMode == TimerMode.POMODORO ? 'active': '')}>Pomodoro</Button>
                     <Button onClick={this.handleShortBreakClick} className={(this.state.timerMode == TimerMode.SHORT_BREAK ? 'active': '')}>Short Break</Button>

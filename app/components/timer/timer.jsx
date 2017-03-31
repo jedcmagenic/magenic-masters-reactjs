@@ -75,8 +75,8 @@ class Timer extends  React.Component{
         return (
         <div className="panel">
             <div className="text-center">
-                <h1 className="display-1">
-                    {("0" + this.state.minutesRemaining).slice(-2)} : {("0" + this.state.secondsRemaining).slice(-2)}
+                <h1 className="timer-digits">
+                    {("0" + this.state.minutesRemaining).slice(-2)}:{("0" + this.state.secondsRemaining).slice(-2)}
                 </h1>
             </div>
             <div className="text-center">

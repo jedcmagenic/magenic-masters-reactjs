@@ -1,7 +1,7 @@
 
 import React from 'react';
 import {Popover} from 'react-bootstrap';
-import TaskStore from '../stores/taskstore.js';
+import TaskStore from '../../stores/taskstore.js';
 import { Link } from 'react-router'
 import _ from 'lodash';
 

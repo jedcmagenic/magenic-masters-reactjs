@@ -38,8 +38,8 @@ export default class TaskModal extends React.Component {
             description: nextProps.task.description,
             priorityId: nextProps.task.priorityId,
             statusId: nextProps.task.statusId,
-            hours: nextProps.task.hours,
-            minutes: nextProps.task.minutes,
+            hours: nextProps.task.hours ? nextProps.task.hours : 0 ,
+            minutes: nextProps.task.minutes ? nextProps.task.minutes : 0,
             nameError: '',
             descriptionError: ''
         })
@@ -95,7 +95,7 @@ export default class TaskModal extends React.Component {
             hours: parseInt(this.state.hours),
             minutes: parseInt(this.state.minutes)
         }
-
+debugger;
         this.setState({
             id: 0,
             name: '',
