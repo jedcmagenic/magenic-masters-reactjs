@@ -28,9 +28,26 @@ class TimerContainer extends React.Component {
         this.handleTimerConfigurationOptionChange = this.handleTimerConfigurationOptionChange.bind(this)
     }
     componentWillReceiveProps(nextProps){
-        this.setState({
-            timerConfigurationOptions: nextProps.timerConfigurationOptions,
-        })
+        if(this.state.selectedTimerConfigurationOption == 1 
+                && nextProps.timerConfigurationOptions.length == 1){
+            const config = nextProps.timerConfigurationOptions[0]
+            this.setState({
+                setMinutes: config.pomodoro,
+                setSeconds: 0,
+                timerMode: TimerMode.POMODORO,
+                timerConfigurationOptions: nextProps.timerConfigurationOptions,
+                selectedTimerConfigurationOption: config.id,
+                pomodoroMinutes: config.pomodoro,
+                shortBreakMinutes: config.shortBreak,
+                longBreakMinutes: config.longBreak
+            });
+        }
+        else{
+            this.setState({
+                timerConfigurationOptions: nextProps.timerConfigurationOptions,
+            });
+        }
+        
     }
     handlePomodoroClick(){
         this.setState({
