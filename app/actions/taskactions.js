@@ -27,6 +27,22 @@ class TaskActions {
             taskId: taskId
         })
     }
+    completeTask(taskId){
+        let updatedTask = TaskApi.completeTask(taskId);
+
+        Dispatcher.dispatch({
+            type: ActionTypes.COMPLETE_TASK,
+            task: updatedTask
+        })
+    }
+    logTaskDuration(taskId, elapsedSeconds){
+        let updatedTask = TaskApi.logTaskDuration(taskId, elapsedSeconds);
+
+        Dispatcher.dispatch({
+            type: ActionTypes.LOG_TASK_DURATION,
+            task: updatedTask
+        })
+    }
 }
 
 const taskActions = new TaskActions();

@@ -19,6 +19,7 @@ export default class TaskModal extends React.Component {
             statusId: 1,
             hours: 0,
             minutes: 0,
+            seconds: 0,
             timerConfigurationId: 1,
             nameError: '',
             descriptionError: '',
@@ -53,6 +54,7 @@ export default class TaskModal extends React.Component {
             statusId: nextProps.task.statusId,
             hours: nextProps.task.hours ? nextProps.task.hours : 0 ,
             minutes: nextProps.task.minutes ? nextProps.task.minutes : 0,
+            seconds: nextProps.task.seconds ? nextProps.task.seconds : 0,
             timerConfigurationId: 1,
             nameError: '',
             descriptionError: ''
@@ -115,6 +117,7 @@ export default class TaskModal extends React.Component {
             statusId: this.state.statusId,
             hours: parseInt(this.state.hours),
             minutes: parseInt(this.state.minutes),
+            seconds: parseInt(this.state.seconds),
             timerConfigurationId: parseInt(this.state.timerConfigurationId)
         }
         this.setState({

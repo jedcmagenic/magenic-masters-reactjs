@@ -7,7 +7,8 @@ class Timer extends  React.Component{
         this.state = {
             minutesRemaining: 0,
             secondsRemaining: 0,
-            timerStart: false
+            timerStart: false,
+            totalElapsedSeconds: 0
         }
         this.tick = this.tick.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
@@ -17,7 +18,10 @@ class Timer extends  React.Component{
         this.handleResetTimer = this.handleResetTimer.bind(this);
     }
     tick() {
-        this.setState({secondsRemaining: this.state.secondsRemaining - 1});
+        this.setState({
+            secondsRemaining: this.state.secondsRemaining - 1,
+            totalElapsedSeconds: this.state.totalElapsedSeconds + 1
+        });
         if (!this.state.timerStart || this.state.secondsRemaining <= 0) {
             this.setState({minutesRemaining: this.state.minutesRemaining - 1 })
             if(this.state.minutesRemaining < 0){
@@ -25,8 +29,9 @@ class Timer extends  React.Component{
                 this.setState({ minutesRemaining: 0});
                 this.props.onTimerExpired();
             }
-            else
+            else{
                 this.setState({ secondsRemaining: 59});
+            }
         }
     }
     componentWillReceiveProps(nextProps) {
@@ -53,6 +58,7 @@ class Timer extends  React.Component{
             });
             this.interval = setInterval(this.tick, 1000);
         }
+        this.props.onTimerStart();
     }
     handleStopTimer(){
         clearTimeout(this.interval)
@@ -61,6 +67,7 @@ class Timer extends  React.Component{
                 timerStart: false
             });
         }
+        this.props.onTimerStop(this.state.totalElapsedSeconds);
     }
     handleResetTimer(){
         clearInterval(this.interval);
@@ -68,7 +75,8 @@ class Timer extends  React.Component{
         this.setState({
             minutesRemaining: this.props.setMinutes,
             secondsRemaining: this.props.setSeconds,
-            timerStart: false
+            timerStart: false,
+            totalElapsedSeconds: 0
         });
     }
     render() {

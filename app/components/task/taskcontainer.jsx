@@ -37,7 +37,8 @@ class TaskContainer extends React.Component{
                 statusId:1,
                 priorityId:1,
                 hours:0,
-                minutes:0
+                minutes:0,
+                seconds: 0
             },
             showTaskModal: true
         });

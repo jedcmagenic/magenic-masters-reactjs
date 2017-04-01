@@ -32,6 +32,7 @@ let taskStore = new TaskStore();
 
 Dispatcher.register(action => {
 
+    let existingTaskIndex = 0;
     switch(action.type) {
         case ActionTypes.INITIALIZE:
             _tasks = action.initialData.tasks;
@@ -39,8 +40,10 @@ Dispatcher.register(action => {
         case ActionTypes.ADD_TASK:
             _tasks.push(action.task);
             break;
+        case ActionTypes.LOG_TASK_DURATION:
+        case ActionTypes.COMPLETE_TASK:
         case ActionTypes.UPDATE_TASK:
-            let existingTaskIndex = _.indexOf(_tasks, _.find(_tasks, {id: action.task.id}))
+            existingTaskIndex = _.indexOf(_tasks, _.find(_tasks, {id: action.task.id}))
             _tasks.splice(existingTaskIndex, 1, action.task);
             break;
         case ActionTypes.DELETE_TASK:
