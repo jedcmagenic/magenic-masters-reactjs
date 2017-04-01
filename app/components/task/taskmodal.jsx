@@ -6,6 +6,7 @@ import NumericInputFormControl from '../common/numericinputformcontrol';
 import SelectFormControl from '../common/selectformcontrol';
 import TaskPriorityTypes from '../../constants/taskprioritytypes';
 import TaskStatuses from '../../constants/taskstatuses';
+import TimerConfigurationStore from '../../stores/timerconfigurationstore.js';
 
 export default class TaskModal extends React.Component {
     constructor(){
@@ -18,8 +19,10 @@ export default class TaskModal extends React.Component {
             statusId: 1,
             hours: 0,
             minutes: 0,
+            timerConfigurationId: 1,
             nameError: '',
-            descriptionError: ''
+            descriptionError: '',
+            timerConfigurations: TimerConfigurationStore.getAllTimerConfigurations()
         }
 
         this.handleCloseTaskModal = this.handleCloseTaskModal.bind(this);
@@ -30,6 +33,16 @@ export default class TaskModal extends React.Component {
         this.handleDurationHoursChange = this.handleDurationHoursChange.bind(this);
         this.handleDurationMinutesChange = this.handleDurationMinutesChange.bind(this);
         this.handleSaveTask = this.handleSaveTask.bind(this);
+        this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
+        this.componentWillUnmount = this.componentWillUnmount.bind(this);
+        this.handleTimerConfigurationChange = this.handleTimerConfigurationChange.bind(this);
+    }
+    componentWillMount(){
+        TimerConfigurationStore.addChangeListener(this.handleTimerConfigurationChange);
+    }
+    componentWillUnmount(){
+        TimerConfigurationStore.removeChangeListener(this.handleTimerConfigurationChange);
     }
     componentWillReceiveProps(nextProps){
         this.setState({
@@ -40,9 +53,13 @@ export default class TaskModal extends React.Component {
             statusId: nextProps.task.statusId,
             hours: nextProps.task.hours ? nextProps.task.hours : 0 ,
             minutes: nextProps.task.minutes ? nextProps.task.minutes : 0,
+            timerConfigurationId: 1,
             nameError: '',
             descriptionError: ''
-        })
+        });
+    }
+    handleTimerConfigurationChange(){
+        this.setState({timerConfigurations: TimerConfigurationStore.getAllTimerConfigurations()});
     }
     handleNameChange(event){
         const inputName = event.target.value
@@ -67,6 +84,10 @@ export default class TaskModal extends React.Component {
     handleDurationMinutesChange(event){
         const minutesValue = parseInt(event.target.value);
         this.setState({minutes: minutesValue});
+    }
+    handleTimerConfigurationChange(event){
+        const configId = parseInt(event.target.value);
+        this.setState({timerConfigurationId: configId});
     }
     handleSaveTask(){
         let hasErrors = false;
@@ -93,9 +114,9 @@ export default class TaskModal extends React.Component {
             priorityId: this.state.priorityId,
             statusId: this.state.statusId,
             hours: parseInt(this.state.hours),
-            minutes: parseInt(this.state.minutes)
+            minutes: parseInt(this.state.minutes),
+            timerConfigurationId: parseInt(this.state.timerConfigurationId)
         }
-debugger;
         this.setState({
             id: 0,
             name: '',
@@ -137,11 +158,10 @@ debugger;
                                     , {id: "3", name: TaskStatuses.DONE}]} 
                             onChangeEvent={this.handleStatusChange} placeholder="Select Status"
                             value={this.state.statusId} />
-                        {/*<NumericInputFormControl name="durationHours" label="Duration(Hours)" onChangeEvent={this.handleDurationHoursChange} placeholder="0"
-                            value={this.state.hours} error={this.state.descriptionError} />
-                        
-                        <NumericInputFormControl name="durationMinutes" label="Duration(Minutes)" onChangeEvent={this.handleDurationMinutesChange} placeholder="0"
-                            value={this.state.minutes} error={this.state.descriptionError} maxValue="60"/>*/}
+                        <SelectFormControl name="timerConfiguration" label="Timer Configuration" 
+                            options={this.state.timerConfigurations} 
+                            onChangeEvent={this.handleTimerConfigurationChange} placeholder="Select Timer Configuration"
+                            value={this.state.timerConfigurationId} />
                     </form>
                 </Modal.Body>
                 <Modal.Footer>

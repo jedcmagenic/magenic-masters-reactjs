@@ -51,7 +51,6 @@ class TaskContainer extends React.Component{
     handleDeleteTask(id){
         TaskActions.deleteTask(id);
         toastr.success("Task deleted");
-        this.props.onChange();
     }
     handleCloseTaskModal(){
         this.setState({
@@ -68,32 +67,35 @@ class TaskContainer extends React.Component{
         this.setState({
             showTaskModal:false,
         });
-
-        this.props.onChange();
     }
     render(){
         return (
-            <div>
-                <TaskList 
-                    taskItems={ this.state.tasksData } 
-                    onEditTask={this.handleEditTask}
-                    onDeleteTask={this.handleDeleteTask}/>
-                <div className="col-md-6 btn-toolbar">
-                    <Button bsStyle="primary" onClick={this.handleAddTask}><span className="glyphicon glyphicon-plus"></span> Add Task</Button>
+            <div className="panel panel-primary">
+                <div className="panel-heading">{this.props.title}</div>
+                <div className="panel-body">
+                    <div>
+                        <TaskList 
+                            taskItems={ this.state.tasksData } 
+                            onEditTask={this.handleEditTask}
+                            onDeleteTask={this.handleDeleteTask}/>
+                        <div className="col-md-6 btn-toolbar">
+                            <Button bsStyle="primary" onClick={this.handleAddTask}><span className="glyphicon glyphicon-plus"></span> Add Task</Button>
+                        </div>
+                        <TaskModal 
+                            show={this.state.showTaskModal}
+                            task={this.state.currentTask}
+                            onSaveTask={this.handleSaveTask}
+                            onCancelClick={this.handleCloseTaskModal}/>
+                    </div>
                 </div>
-                <TaskModal 
-                    show={this.state.showTaskModal}
-                    task={this.state.currentTask}
-                    onSaveTask={this.handleSaveTask}
-                    onCancelClick={this.handleCloseTaskModal}/>
             </div>
         );
     }
 };
 
 TaskContainer.propTypes = {
+    title: React.PropTypes.string,
     tasks: React.PropTypes.array.isRequired,
-    onChange: React.PropTypes.func.isRequired
 }
 
 export default TaskContainer;

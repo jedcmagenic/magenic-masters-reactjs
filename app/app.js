@@ -10,7 +10,7 @@ import TaskMasterList from './components/task/taskmasterlist';
 import ToastrScss from 'toastr/build/toastr.css'
 import { Router, Route, hashHistory } from 'react-router'
 import InitializeActions from './actions/initializeactions';
-import TimerPage from './components//timer/timercontainer';
+import TimerManagement from './components//timer/timermanagement';
 
 InitializeActions.initApp();
 
@@ -19,7 +19,7 @@ ReactDOM.render(
             <Route component={MasterPage}>
                 <Route path="/" component={Dashboard} />
                 <Route path="/taskList" component={TaskMasterList}/>
-                <Route path="/timer" component={TimerPage}/>
+                <Route path="/timerManagement" component={TimerManagement}/>
             </Route>
         </Router>
     , document.getElementById('root')

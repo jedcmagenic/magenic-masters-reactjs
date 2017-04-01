@@ -33,7 +33,7 @@
     border-radius: 0px !important;
 }
 
-.table > thead.tasks {
+.table > thead.tableHeader  {
     background-color: lightblue;
 }
 

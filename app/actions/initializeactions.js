@@ -1,5 +1,6 @@
 import Dispatcher from '../dispatcher/dispatcher';
 import TaskApi from '../api/tasks-api';
+import TimerConfigurationApi from '../api/timerconfig-api';
 import ActionTypes from '../constants/actiontypes';
 
 class InitializeActions {
@@ -7,7 +8,8 @@ class InitializeActions {
         Dispatcher.dispatch({
             type: ActionTypes.INITIALIZE,
             initialData: {
-                tasks: TaskApi.getAllTasks()
+                tasks: TaskApi.getAllTasks(),
+                timerConfigurations: TimerConfigurationApi.getAllTimerConfigurations()
             }
         })
     }

@@ -9,25 +9,29 @@ export default class TaskMasterList extends React.Component {
             tasks: TaskStore.getAllTasks()
         }
         this.handleTaskListChange = this.handleTaskListChange.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
+        this.componentWillUnmount = this.componentWillUnmount.bind(this);
     }
     handleTaskListChange(){
         this.setState({
             tasks: TaskStore.getAllTasks()
         });
     }
+    componentWillMount(){
+        TaskStore.addChangeListener(this.handleTaskListChange);
+    }
+    componentWillUnmount(){
+        TaskStore.removeChangeListener(this.handleTaskListChange);
+    }
     render (){
         return (
             <div className="container-fluid">
                 <div className="col-md-12">
-                    <h2>Tasks Masterlist</h2>
-                    <div className="panel panel-primary">
-                        <div className="panel-heading">All Tasks </div>
-                        <div className="panel-body">
-                            <TaskContainer 
-                                tasks={this.state.tasks}
-                                onChange={this.handleTaskListChange} />
-                        </div>
-                    </div>
+                    <h3>Task Management</h3>
+                </div>
+                <div className="col-md-12"><TaskContainer
+                    title="Tasks Masterlist"
+                    tasks={this.state.tasks} />
                 </div>
             </div>
         );

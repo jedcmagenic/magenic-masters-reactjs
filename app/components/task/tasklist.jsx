@@ -46,7 +46,7 @@ class TaskList extends React.Component {
         return (
             <div className="col-md-12">
                 <table className="table table-bordered table-responsive table-striped">
-                    <thead className="tasks">
+                    <thead className="tableHeader">
                         <tr>
                             <th className="text-center">Task Details</th>
                             <th className="text-center">Priority</th>
