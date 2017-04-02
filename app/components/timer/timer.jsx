@@ -62,12 +62,14 @@ class Timer extends  React.Component{
     }
     handleStopTimer(){
         clearTimeout(this.interval)
+        const totalElapsedSeconds = this.state.totalElapsedSeconds;
         if(this.state.timerStart){
             this.setState({
-                timerStart: false
+                timerStart: false,
+                totalElapsedSeconds: 0
             });
         }
-        this.props.onTimerStop(this.state.totalElapsedSeconds);
+        this.props.onTimerStop(totalElapsedSeconds);
     }
     handleResetTimer(){
         clearInterval(this.interval);

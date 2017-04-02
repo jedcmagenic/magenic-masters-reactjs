@@ -18,13 +18,18 @@ class TaskCombo extends React.Component {
         this.handleTaskListChange = this.handleTaskListChange.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
     handleTaskListChange(){
+        debugger;
         const tasks = TaskStore.getTasksByStatusId(2);
-        this.setState({
-            tasks: tasks,
-            selectedId: (tasks && tasks.length > 0) ? tasks[0].id : 0
-        });
+        if (tasks && tasks.length > 0) {
+            this.setState({
+                tasks: tasks,
+                selectedId: (tasks && tasks.length > 0) ? tasks[0].id : 0
+            });
+            this.props.onOptionsLoad(tasks[0]);
+        }
     }
     handleTaskOptionChange(event){
         const selectedId = parseInt(event.currentTarget.selectedOptions[0].value);
@@ -32,7 +37,8 @@ class TaskCombo extends React.Component {
             selectedId: selectedId
         })
         const task = _.find(this.state.tasks, {id: selectedId});
-        this.props.onOptionChange(task);
+        if(task)
+            this.props.onOptionChange(task);
     }
     handleCompleteTaskClick(){
         TaskActions.completeTask(this.state.selectedId);
@@ -40,6 +46,12 @@ class TaskCombo extends React.Component {
     }
     componentWillMount(){
         TaskStore.addChangeListener(this.handleTaskListChange);
+    }
+    componentDidMount(){
+        if(this.state.tasks.length){
+            debugger;
+            this.props.onOptionsLoad(this.state.tasks[0]);
+        }
     }
     componentWillUnmount(){
         TaskStore.removeChangeListener(this.handleTaskListChange);

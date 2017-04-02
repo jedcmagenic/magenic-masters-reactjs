@@ -9,52 +9,26 @@ import TimerConfigurationStore from '../../stores/timerconfigurationstore.js';
 import TaskActions from '../../actions/taskactions';
 
 class TimerContainer extends React.Component {
-    constructor (props){
-        super(props)
-        const timerConfigurationId = props.timerConfigurationOptions[0] ? props.timerConfigurationOptions[0].id : 1;
+    constructor (){
+        super()
         
-        const timerConfiguration = TimerConfigurationStore.getTimerConfigurationById(timerConfigurationId);
         this.state={
-            setMinutes: timerConfiguration ? timerConfiguration.pomodoro : 25,
+            setMinutes:  25,
             setSeconds: 0,
             timerMode: TimerMode.POMODORO,
             timerStarted: false,
-            timerConfigurationOptions: props.timerConfigurationOptions,
-            selectedTimerConfigurationOption: timerConfiguration ? timerConfiguration.id: 0,
-            pomodoroMinutes: timerConfiguration ? timerConfiguration.pomodoro : 25,
-            shortBreakMinutes: timerConfiguration ? timerConfiguration.shortBreak : 5,
-            longBreakMinutes: timerConfiguration ? timerConfiguration.longBreak : 15
+            pomodoroMinutes: 25,
+            shortBreakMinutes: 5,
+            longBreakMinutes: 15,
+            selectedTaskId: 0
         }
-        this.handlePomodoroClick = this.handlePomodoroClick.bind(this)
-        this.handleShortBreakClick = this.handleShortBreakClick.bind(this)
-        this.handleLongBreakClick = this.handleLongBreakClick.bind(this)
-        this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this)
-        this.handleTimerConfigurationOptionChange = this.handleTimerConfigurationOptionChange.bind(this)
-        this.handleTimerStop = this.handleTimerStop.bind(this)
-        this.handleTimerStart = this.handleTimerStart.bind(this)
-    }
-    componentWillReceiveProps(nextProps){
-        if(this.state.selectedTimerConfigurationOption == 1 
-                && nextProps.timerConfigurationOptions.length == 1){
-            const config = nextProps.timerConfigurationOptions[0]
-            this.setState({
-                setMinutes: config.pomodoro,
-                setSeconds: 0,
-                timerMode: TimerMode.POMODORO,
-                timerConfigurationOptions: nextProps.timerConfigurationOptions,
-                selectedTimerConfigurationOption: config.id,
-                pomodoroMinutes: config.pomodoro,
-                shortBreakMinutes: config.shortBreak,
-                longBreakMinutes: config.longBreak
-            });
-        }
-        else{
-            this.setState({
-                timerConfigurationOptions: nextProps.timerConfigurationOptions,
-                selectedTimerConfigurationOption: nextProps.timerConfigurationOptions[0].id
-            });
-        }
-        
+        this.handlePomodoroClick = this.handlePomodoroClick.bind(this);
+        this.handleShortBreakClick = this.handleShortBreakClick.bind(this);
+        this.handleLongBreakClick = this.handleLongBreakClick.bind(this);
+        this.handleTimerStop = this.handleTimerStop.bind(this);
+        this.handleTimerStart = this.handleTimerStart.bind(this);
+        this.handleTaskComboOptionChange = this.handleTaskComboOptionChange.bind(this);
+        this.handleTaskComboLoad = this.handleTaskComboLoad.bind(this);
     }
     handlePomodoroClick(){
         this.setState({
@@ -83,22 +57,20 @@ class TimerContainer extends React.Component {
         toastr.info("Time's up!");
     }
     handleTimerStart(){
-        this.setState({
-            timerStarted: true
-        })
+        
     }
     handleTimerStop(totalElapsedSeconds){
         if(this.state.timerMode != TimerMode.LONG_BREAK){
-            TaskActions.logTaskDuration(this.state.selectedTimerConfigurationOption, totalElapsedSeconds);
+            TaskActions.logTaskDuration(this.state.selectedTaskId, totalElapsedSeconds);
         }
     }
-    handleTimerConfigurationOptionChange(task){
+    handleTaskComboOptionChange(task){
         const timerConfiguration = TimerConfigurationStore.getTimerConfigurationById(task.timerConfigurationId);
         this.setState({
             pomodoroMinutes: timerConfiguration.pomodoro,
             shortBreakMinutes: timerConfiguration.shortBreak,
             longBreakMinutes: timerConfiguration.longBreak,
-            selectedTimerConfigurationOption: selectedId
+            selectedTaskId: task.id
         });
 
         switch (this.state.timerMode) {
@@ -116,12 +88,18 @@ class TimerContainer extends React.Component {
                 break;
         }
     }
+    handleTaskComboLoad(selectedTask){
+        this.handleTaskComboOptionChange(selectedTask);
+    }
     render (){
         return (
             <div className=" panel panel-primary">
                 <div className="panel-heading">Pomodoro Timer </div>
                 <div className="panel-body">
-                    <TaskCombo onOptionChange={this.handleTimerConfigurationOptionChange} />
+                    <TaskCombo 
+                        onOptionChange={this.handleTaskComboOptionChange}
+                        onOptionsLoad={this.handleTaskComboLoad}
+                        />
                     <div className="text-center">
                         <ButtonGroup>
                             <Button onClick={this.handlePomodoroClick} className={(this.state.timerMode == TimerMode.POMODORO ? 'active': '')}>Pomodoro</Button>
@@ -143,7 +121,6 @@ class TimerContainer extends React.Component {
 }
 
 TimerContainer.propTypes = {
-    timerConfigurationOptions: React.PropTypes.array
 };
 
 
