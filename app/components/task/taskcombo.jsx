@@ -21,7 +21,6 @@ class TaskCombo extends React.Component {
         this.componentDidMount = this.componentDidMount.bind(this);
     }
     handleTaskListChange(){
-        debugger;
         const tasks = TaskStore.getTasksByStatusId(2);
         if (tasks && tasks.length > 0) {
             this.setState({
@@ -29,6 +28,13 @@ class TaskCombo extends React.Component {
                 selectedId: (tasks && tasks.length > 0) ? tasks[0].id : 0
             });
             this.props.onOptionsLoad(tasks[0]);
+        }
+        else{
+            this.setState({
+                tasks: [],
+                selectedId: 0
+            });
+            this.props.onOptionsLoad();
         }
     }
     handleTaskOptionChange(event){
@@ -49,7 +55,6 @@ class TaskCombo extends React.Component {
     }
     componentDidMount(){
         if(this.state.tasks.length){
-            debugger;
             this.props.onOptionsLoad(this.state.tasks[0]);
         }
     }

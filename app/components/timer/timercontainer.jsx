@@ -65,28 +65,47 @@ class TimerContainer extends React.Component {
         }
     }
     handleTaskComboOptionChange(task){
-        const timerConfiguration = TimerConfigurationStore.getTimerConfigurationById(task.timerConfigurationId);
-        this.setState({
-            pomodoroMinutes: timerConfiguration.pomodoro,
-            shortBreakMinutes: timerConfiguration.shortBreak,
-            longBreakMinutes: timerConfiguration.longBreak,
-            selectedTaskId: task.id
-        });
+        if(task){
+            const timerConfiguration = TimerConfigurationStore.getTimerConfigurationById(task.timerConfigurationId);
+            this.setState({
+                pomodoroMinutes: timerConfiguration.pomodoro,
+                shortBreakMinutes: timerConfiguration.shortBreak,
+                longBreakMinutes: timerConfiguration.longBreak,
+                selectedTaskId: task.id
+            });
 
-        switch (this.state.timerMode) {
-            case TimerMode.POMODORO:
-                this.setState({ setMinutes: timerConfiguration.pomodoro});
-                break;
-            case TimerMode.SHORT_BREAK:
-                this.setState({ setMinutes: timerConfiguration.shortBreak});
-                break;
-            case TimerMode.LONG_BREAK:
-                this.setState({ setMinutes: timerConfiguration.longBreak});
-                break;
-            default:
-                this.handlePomodoroClick();
-                break;
+            switch (this.state.timerMode) {
+                case TimerMode.POMODORO:
+                    this.setState({ setMinutes: timerConfiguration.pomodoro});
+                    break;
+                case TimerMode.SHORT_BREAK:
+                    this.setState({ setMinutes: timerConfiguration.shortBreak});
+                    break;
+                case TimerMode.LONG_BREAK:
+                    this.setState({ setMinutes: timerConfiguration.longBreak});
+                    break;
+                default:
+                    this.handlePomodoroClick();
+                    break;
+            }
+        }else{
+            switch (this.state.timerMode) {
+                case TimerMode.POMODORO:
+                    this.setState({ setMinutes: 25});
+                    break;
+                case TimerMode.SHORT_BREAK:
+                    this.setState({ setMinutes: 5});
+                    break;
+                case TimerMode.LONG_BREAK:
+                    this.setState({ setMinutes: 15});
+                    break;
+                default:
+                    this.handlePomodoroClick();
+                    break;
+            }
         }
+
+
     }
     handleTaskComboLoad(selectedTask){
         this.handleTaskComboOptionChange(selectedTask);
