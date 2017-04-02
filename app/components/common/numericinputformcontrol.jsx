@@ -1,6 +1,6 @@
 import React from 'react';
 
-class InputFormControl extends React.Component {
+class NumericInputFormControl extends React.Component {
     constructor(){
         super()
     }
@@ -14,9 +14,10 @@ class InputFormControl extends React.Component {
             <div className={wrapperClass}>
                 <label htmlFor={this.props.name}>{this.props.label}</label>
                 <div className="field">
-                    <input type="text" name={this.props.name} className="form-control" 
+                    <input type="number" name={this.props.name} className="form-control" 
                         placeholder={this.props.placeholder} ref={this.props.name}
-                        value={this.props.value} onChange={this.props.onChangeEvent} />
+                        value={this.props.value} onChange={this.props.onChangeEvent} 
+                        min={this.props.minValue} max={this.props.maxValue}/>
                     <div className="input">{this.props.error}</div>
                 </div>
             </div>
@@ -24,13 +25,15 @@ class InputFormControl extends React.Component {
     }
 }
 
-InputFormControl.propTypes = {
+NumericInputFormControl.propTypes = {
     name: React.PropTypes.string.isRequired,
     label: React.PropTypes.string.isRequired,
     onChangeEvent: React.PropTypes.func.isRequired,
     placeholder: React.PropTypes.string,
-    value: React.PropTypes.string,
+    value: React.PropTypes.number,
+    minValue: React.PropTypes.string,
+    maxValue: React.PropTypes.string,
     error: React.PropTypes.string
 };
 
-export default InputFormControl;
+export default NumericInputFormControl;

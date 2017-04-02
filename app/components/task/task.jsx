@@ -1,6 +1,6 @@
 import React from 'react';
-import TaskPriority from '../constants/taskprioritytypes';
-import TaskStatus from '../constants/taskstatuses';
+import TaskPriority from '../../constants/taskprioritytypes';
+import TaskStatus from '../../constants/taskstatuses';
 
 class TaskItem extends React.Component {
     constructor (){
@@ -15,7 +15,8 @@ class TaskItem extends React.Component {
             name: this.props.name,
             description: this.props.description,
             priorityId: this.props.priorityId,
-            statusId: this.props.statusId
+            statusId: this.props.statusId,
+            duration: this.props.duration
         }
         this.props.onEditClick(taskToEdit);
     }
@@ -46,13 +47,13 @@ class TaskItem extends React.Component {
         let priorityValue = "";
         switch (priorityId) {
             case 1:
-                priorityValue = TaskPriority.HIGH
+                priorityValue = TaskPriority.LOW
                 break;
             case 2:
                 priorityValue = TaskPriority.MEDIUM
                 break;
             case 3:
-                priorityValue = TaskPriority.LOW
+                priorityValue = TaskPriority.HIGH
                 break;
             default:
                 priorityValue = TaskPriority.LOW
@@ -71,6 +72,7 @@ class TaskItem extends React.Component {
                 </td>
                 <td className="text-center middle">{this.getPriorityValue(this.props.priorityId)}</td>
                 <td className="text-center">{this.getStatusValue(this.props.statusId)}</td>
+                <td className="text-center">{this.props.duration}</td>
                 <td className="text-center">
                     <div className="btn-group">
                         <button type="button" className="btn btn-primary glyphicon glyphicon-edit" onClick={this.handleEditClick}></button>
@@ -88,6 +90,7 @@ TaskItem.propTypes = {
     description: React.PropTypes.string,
     priorityId: React.PropTypes.number.isRequired,
     statusId: React.PropTypes.number.isRequired,
+    duration: React.PropTypes.string,
     onEditClick: React.PropTypes.func.isRequired,
     onDeleteClick: React.PropTypes.func.isRequired
 };

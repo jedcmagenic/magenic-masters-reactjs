@@ -24,6 +24,24 @@ class TaskApi {
     deleteTask(id){
         _.remove(TasksData, {id: id});
     }
+    completeTask(id){
+        let existingTaskIndex = _.indexOf(TasksData, _.find(TasksData, {id: id}))
+        let task = _.find(TasksData, {id: id});
+        task.statusId = 3;
+        TasksData.splice(existingTaskIndex, 1, task);
+        return JSON.parse(JSON.stringify(task));
+    }
+    logTaskDuration(id, seconds){
+        let existingTaskIndex = _.indexOf(TasksData, _.find(TasksData, {id: id}))
+        let task = _.find(TasksData, {id: id});
+        let totalSeconds = (task.hours * 3600) + (task.minutes * 60) + task.seconds + seconds;
+        totalSeconds = Number(totalSeconds);
+        task.hours = Math.floor(totalSeconds / 3600);
+        task.minutes = Math.floor(totalSeconds % 3600 / 60);
+        task.seconds = Math.floor(totalSeconds % 3600 % 60);
+        TasksData.splice(existingTaskIndex, 1, task);
+        return JSON.parse(JSON.stringify(task));
+    }
 }
 const taskApi = new TaskApi();
 
