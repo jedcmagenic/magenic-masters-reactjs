@@ -2,9 +2,10 @@
   "name": "magenic-masters-reactjs",
   "version": "1.0.0",
   "description": "A reactJS training app",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server -d --progress --colors --display-error-details",
+    "start": "node index.js",
+    "start-dev": "webpack-dev-server -d --progress --colors --display-error-details",
     "build": "npm run env NODE_ENV=production&&webpack -p --progress --colors --display-error-details",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -26,6 +27,7 @@
     "babel-preset-stage-0": "^6.22.0",
     "bootstrap": "^3.3.7",
     "css-loader": "^0.26.1",
+    "express": "^4.15.2",
     "file-loader": "^0.9.0",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.8",
